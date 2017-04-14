@@ -1,6 +1,7 @@
 #include "Program.h"
 #include "Config.h"
 #include <boost/filesystem.hpp>
+#include "Console.h"
 Program::Status Program::status;
 World * Program::world;
 Menu * Program::userMenu;
@@ -17,7 +18,9 @@ void Program::handle()
 
 void Program::newGame()
 {
-
+	Console::clear();
+	WindowPosition winPos = Console::drawWindow(50, 2);
+	
 }
 
 void Program::loadGame()

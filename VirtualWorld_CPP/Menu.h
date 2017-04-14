@@ -12,11 +12,10 @@ public:
 	};
 	Menu();
 	~Menu();
-	void performAction();
-	void handleInput();
+	void performSelectedAction();
 	void handle();
 private:
-	void print();
+	void draw() const;
 	std::list<Position*>*positions;
 	short x, y, width, height;
 	Function choice;

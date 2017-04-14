@@ -1,9 +1,8 @@
 ﻿#include "Menu.h"
 #include <list>
 #include "Config.h"
-#include "Screen.h"
+#include "Console.h"
 #include <iostream>
-#include <sstream>
 #include <conio.h>
 #include "Keyboard.h"
 #include "Program.h"
@@ -16,8 +15,8 @@ Menu::Menu()
 	positions->push_back(new Position{ "Wyjscie", exit });
 	width = cfg::MENU_WIDTH;
 	height = cfg::MENU_HEIGHT;
-	x = (Screen::getWidth() / 2) - (width / 2);
-	y = (Screen::getHeight() / 2) - (height / 2);
+	x = (Console::getWidth() / 2) - (width / 2);
+	y = (Console::getHeight() / 2) - (height / 2);
 	choice = newGame;
 }
 
@@ -31,7 +30,7 @@ Menu::~Menu()
 	delete positions;
 }
 
-void Menu::performAction()
+void Menu::performSelectedAction()
 {
 	switch (choice)
 	{
@@ -49,18 +48,16 @@ void Menu::performAction()
 	}
 }
 
-void Menu::handleInput()
+
+void Menu::handle()
 {
-	int c = 0;
+	Console::clear();
 	short menuPosition = choice;
 	while (true)
 	{
-		print();
-		c = getch();
-		if (c == KEY_ESC) Program::close();
-		else if (c == KEY_ENTER) performAction();
-		else if(c==0xE0)
-		switch ((c = getch())) {
+		draw();
+		switch(Keyboard::getKey())
+		{
 		case KEY_UP:
 			//cout << "UP";
 			menuPosition--;
@@ -70,6 +67,7 @@ void Menu::handleInput()
 			menuPosition++;
 			break;
 		case KEY_ENTER:
+			performSelectedAction();
 			break;
 		case KEY_ESC:
 			Program::close();
@@ -84,49 +82,21 @@ void Menu::handleInput()
 			choice = (Function)menuPosition;
 		}
 		//while (_kbhit()) _getch();
+
 	}
 }
 
-void Menu::handle()
+void Menu::draw() const
 {
-	Screen::clear();
-	handleInput();
-}
-
-void Menu::print()
-{
-	Screen::setCursorPos(x, y);
-	putchar(cfg::FRAME_CORNER_LT);
-	Screen::setCursorPos(x + width, y);
-	putchar(cfg::FRAME_CORNER_RT);
-	Screen::setCursorPos(x, y + height);
-	putchar(cfg::FRAME_CORNER_LB);
-	Screen::setCursorPos(x + width, y + height);
-	putchar(cfg::FRAME_CORNER_RB);
-	for (int i = x + 1; i < cfg::MENU_WIDTH + x; ++i)
-	{
-		Screen::setCursorPos(i, y);
-		putchar(cfg::FRAME_HORIZONTAL);
-		Screen::setCursorPos(i, y + cfg::MENU_HEIGHT);
-		putchar(cfg::FRAME_HORIZONTAL);
-	}
-	for (int i = y + 1; i < y + height; ++i)
-	{
-		Screen::setCursorPos(x, i);
-		putchar(cfg::FRAME_VERTICAL);
-		Screen::setCursorPos(x + width, i);
-		putchar(cfg::FRAME_VERTICAL);
-	}
-
+	WindowPosition winPos = Console::drawWindow(width, height);
 	short i = 1;
 	for (auto position : *positions)
 	{
-		Screen::setCursorPos(x + ((width / 2) - (position->name.length() / 2)), y + i);
+		Console::setCursorPos(winPos.x + ((width / 2) - (position->name.length() / 2)), winPos.y + i);
 		if (position->function == choice)
-			Screen::setTextAttributes(10);
+			Console::setTextAttributes(10);
 		std::cout << position->name;
-
-		Screen::setTextAttributes(15);
+		Console::setTextAttributes(15);
 		i++;
 	}
 

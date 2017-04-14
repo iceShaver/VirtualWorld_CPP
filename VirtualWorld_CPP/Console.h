@@ -1,10 +1,15 @@
 #pragma once
 #include <Windows.h>
-class Screen
+#include <sstream>
+struct WindowPosition
+{
+	short x, y, width, height;
+};
+class Console
 {
 public:
-	Screen();
-	~Screen();
+	Console();
+	~Console();
 	static void init();
 	static void setCursorPos(short x, short y);
 	static void clear();
@@ -12,6 +17,9 @@ public:
 	static short getWidth();
 	static short getHeight();
 	static void setTextAttributes(WORD wAttributes);
+	static void refresh();
+	static WindowPosition drawWindow(short width, short height);
+	static std::stringstream buffer;
 private:
 	static HANDLE consoleHandle;
 	static short width, height;
