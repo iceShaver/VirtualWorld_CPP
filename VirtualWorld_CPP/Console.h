@@ -23,5 +23,7 @@ public:
 private:
 	static HANDLE consoleHandle;
 	static short width, height;
+	static void bufferCopy(const HANDLE & src, HANDLE & dest, size_t width, size_t height);
+	static void cls(HANDLE handle);
 };
 

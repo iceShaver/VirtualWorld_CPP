@@ -7,10 +7,11 @@ namespace cfg
 	const std::string SAVE_EXT = "h";
 	const short MENU_HEIGHT = 10;
 	const short MENU_WIDTH = 50;
-	const short SCREEN_WIDTH = 190;
-	const short SCREEN_HEIGHT = 60;
-	const char FRAME_ASCII_CODE = 219;
+	const short SCREEN_WIDTH = 212;
+	const short SCREEN_HEIGHT = 54;
 
+	//frames ascii codes
+	const char MAIN_FRAME_ASCII_CODE = 219;
 	const char FRAME_HORIZONTAL = 205;
 	const char FRAME_VERTICAL = 186;
 	const char FRAME_CORNER_LT = 201;

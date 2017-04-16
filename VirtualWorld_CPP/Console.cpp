@@ -29,16 +29,16 @@ void Console::drawFrame()
 	for (int i = 0; i < width; ++i)
 	{
 		setCursorPos(i, 0);
-		putchar(cfg::FRAME_ASCII_CODE);
+		putchar(cfg::MAIN_FRAME_ASCII_CODE);
 		setCursorPos(i, height - 1);
-		putchar(cfg::FRAME_ASCII_CODE);
+		putchar(cfg::MAIN_FRAME_ASCII_CODE);
 	}
 	for (int i = 0; i < height; ++i)
 	{
 		setCursorPos(0, i);
-		putchar(cfg::FRAME_ASCII_CODE);
+		putchar(cfg::MAIN_FRAME_ASCII_CODE);
 		setCursorPos(width, i);
-		putchar(cfg::FRAME_ASCII_CODE);
+		putchar(cfg::MAIN_FRAME_ASCII_CODE);
 	}
 }
 
@@ -94,6 +94,73 @@ WindowPosition Console::drawWindow(short width, short height)
 	}
 	return { x + 1, y + 1, width };
 
+}
+
+void Console::bufferCopy(const HANDLE& src, HANDLE& dest, size_t width, size_t height)
+{
+	COORD bufferSize;
+	bufferSize.X = width;
+	bufferSize.Y = height;
+	SMALL_RECT srcRect;
+	srcRect.Left = 0;
+	srcRect.Top = 0;
+	srcRect.Right = width - 1;
+	srcRect.Bottom = height - 1;
+	SMALL_RECT destRect;
+	CHAR_INFO * charInfoArray = new CHAR_INFO[width*height];
+	ReadConsoleOutput(src, charInfoArray, bufferSize, { 0,0 }, &srcRect);
+	WriteConsoleOutput(dest, charInfoArray, bufferSize, { 0,0 }, &srcRect);
+	delete[] charInfoArray;
+}
+
+void Console::cls(HANDLE handle)
+{
+	COORD coordScreen = { 0, 0 };    // home for the cursor 
+	DWORD cCharsWritten;
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	DWORD dwConSize;
+
+	// Get the number of character cells in the current buffer. 
+
+	if (!GetConsoleScreenBufferInfo(handle, &csbi))
+	{
+		return;
+	}
+
+	dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
+
+	// Fill the entire screen with blanks.
+
+	if (!FillConsoleOutputCharacter(handle,        // Handle to console screen buffer 
+		(TCHAR) ' ',     // Character to write to the buffer
+		dwConSize,       // Number of cells to write 
+		coordScreen,     // Coordinates of first cell 
+		&cCharsWritten))// Receive number of characters written
+	{
+		return;
+	}
+
+	// Get the current text attribute.
+
+	if (!GetConsoleScreenBufferInfo(handle, &csbi))
+	{
+		return;
+	}
+
+	// Set the buffer's attributes accordingly.
+
+	if (!FillConsoleOutputAttribute(handle,         // Handle to console screen buffer 
+		csbi.wAttributes, // Character attributes to use
+		dwConSize,        // Number of cells to set attribute 
+		coordScreen,      // Coordinates of first cell 
+		&cCharsWritten)) // Receive number of characters written
+	{
+		return;
+	}
+
+	// Put the cursor at its home coordinates.
+
+	SetConsoleCursorPosition(handle, coordScreen);
 }
 
 void Console::init()
