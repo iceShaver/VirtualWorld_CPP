@@ -106,6 +106,7 @@ WindowPosition Console::drawWindow(short width, short height)
 
 WindowPosition Console::drawWindow(WindowComposition windowComposition, short widthP, short heightP)
 {
+	//TODO: fix returned WindowPosition values
 	short width, height, x, y;
 	//clear();
 	switch (windowComposition)
