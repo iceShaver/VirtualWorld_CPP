@@ -8,7 +8,8 @@ namespace cfg
 	const short MENU_HEIGHT = 10;
 	const short MENU_WIDTH = 50;
 	const short SCREEN_WIDTH = 212;
-	const short SCREEN_HEIGHT = 54;
+	const short SCREEN_HEIGHT = 53
+	;
 
 	//frames ascii codes
 	const char MAIN_FRAME_ASCII_CODE = 219;

@@ -88,6 +88,7 @@ void Menu::handle()
 
 void Menu::draw() const
 {
+	Console::clear();
 	WindowPosition winPos = Console::drawWindow(width, height);
 	short i = 1;
 	for (auto position : *positions)
@@ -99,6 +100,8 @@ void Menu::draw() const
 		Console::setTextAttributes(15);
 		i++;
 	}
+	//SetConsoleActiveScreenBuffer(Console::consoleHandle);
+	Console::refresh();
 
 
 }

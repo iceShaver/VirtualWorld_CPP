@@ -1,13 +1,14 @@
 #include "Console.h"
 #include "Config.h"
 #include <iostream>
-HANDLE Console::consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+#include <wincon.h>
+HANDLE Console::consoleHandle = NULL;
+HANDLE Console::bufferHandle = NULL;
 short Console::width = cfg::SCREEN_WIDTH;
 short Console::height = cfg::SCREEN_HEIGHT;
 Console::Console()
 {
 }
-
 
 Console::~Console()
 {
@@ -20,7 +21,7 @@ void Console::setCursorPos(short x, short y)
 
 void Console::clear()
 {
-	system("cls");
+	cls(consoleHandle);
 	drawFrame();
 }
 
@@ -59,10 +60,7 @@ void Console::setTextAttributes(WORD wAttributes)
 
 void Console::refresh()
 {
-	setCursorPos(0, 0);
-	std::cout.sync_with_stdio(false);
-	std::cout << buffer.str();
-	buffer.str("");
+	bufferCopy(consoleHandle, bufferHandle, width, height);
 }
 
 WindowPosition Console::drawWindow(short width, short height)
@@ -165,6 +163,10 @@ void Console::cls(HANDLE handle)
 
 void Console::init()
 {
+	std::cout.sync_with_stdio(false);
+	consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	bufferHandle = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
+	SetConsoleActiveScreenBuffer(bufferHandle);
 	CONSOLE_CURSOR_INFO cursorInfo;
 	COORD coord = { width, height };
 	GetConsoleCursorInfo(consoleHandle, &cursorInfo);
@@ -172,6 +174,9 @@ void Console::init()
 	SetConsoleScreenBufferSize(consoleHandle, coord);
 	SetConsoleDisplayMode(consoleHandle, CONSOLE_FULLSCREEN_MODE, &coord);
 	SetConsoleCursorInfo(consoleHandle, &cursorInfo);
+	SetConsoleScreenBufferSize(bufferHandle, coord);
+	SetConsoleDisplayMode(bufferHandle, CONSOLE_FULLSCREEN_MODE, &coord);
+	SetConsoleCursorInfo(bufferHandle, &cursorInfo);
 	setTextAttributes(15);
 
 }

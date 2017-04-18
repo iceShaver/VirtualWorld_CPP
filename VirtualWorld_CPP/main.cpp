@@ -3,7 +3,6 @@
 #include "Config.h"
 #include <iostream>
 #include <string>
-std::stringstream Console::buffer;
 int main(int argc, char* argv[])
 {
 	
@@ -18,7 +17,6 @@ int main(int argc, char* argv[])
 	//	}
 	//	Console::refresh();
 	//}
-
 
 	getchar();
 	return 0;

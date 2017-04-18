@@ -19,9 +19,10 @@ public:
 	static void setTextAttributes(WORD wAttributes);
 	static void refresh();
 	static WindowPosition drawWindow(short width, short height);
-	static std::stringstream buffer;
-private:
 	static HANDLE consoleHandle;
+	static HANDLE bufferHandle;
+private:
+
 	static short width, height;
 	static void bufferCopy(const HANDLE & src, HANDLE & dest, size_t width, size_t height);
 	static void cls(HANDLE handle);
