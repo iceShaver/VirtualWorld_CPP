@@ -4,12 +4,11 @@
 namespace cfg
 {
 	const std::string SAVE_DIR = ".";
-	const std::string SAVE_EXT = "h";
+	const std::string SAVE_EXT = "bin";
 	const short MENU_HEIGHT = 10;
 	const short MENU_WIDTH = 50;
-	const short SCREEN_WIDTH = 212;
-	const short SCREEN_HEIGHT = 53
-	;
+	const short SCREEN_WIDTH = 100;
+	const short SCREEN_HEIGHT = 50;
 
 	//frames ascii codes
 	const char MAIN_FRAME_ASCII_CODE = 219;

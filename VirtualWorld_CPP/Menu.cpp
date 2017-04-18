@@ -41,7 +41,7 @@ void Menu::performSelectedAction()
 		Program::loadGame();
 		break;
 	case exit:
-		Program::close();
+		Program::setStatus(Program::exit);
 		break;
 	default:
 		break;
@@ -51,10 +51,8 @@ void Menu::performSelectedAction()
 
 void Menu::handle()
 {
-	Console::clear();
+	//Console::clear();
 	short menuPosition = choice;
-	while (true)
-	{
 		draw();
 		switch(Keyboard::getKey())
 		{
@@ -70,7 +68,7 @@ void Menu::handle()
 			performSelectedAction();
 			break;
 		case KEY_ESC:
-			Program::close();
+			Program::setStatus(Program::exit);
 			break;
 		default:
 			break;
@@ -83,7 +81,6 @@ void Menu::handle()
 		}
 		//while (_kbhit()) _getch();
 
-	}
 }
 
 void Menu::draw() const
@@ -100,7 +97,6 @@ void Menu::draw() const
 		Console::setTextAttributes(15);
 		i++;
 	}
-	//SetConsoleActiveScreenBuffer(Console::consoleHandle);
 	Console::refresh();
 
 

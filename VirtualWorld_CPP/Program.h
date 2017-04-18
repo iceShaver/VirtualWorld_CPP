@@ -18,6 +18,8 @@ public:
 	static void setStatus(Status status);
 	static void displayMenu();
 	static void close();
+	static void drawGameInterface();
+	static void playTheGame();
 private:
 	static std::vector<std::string> * getFilesList();
 	static bool doesEntryExist(std::string fileName);
