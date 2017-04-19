@@ -112,8 +112,14 @@ WindowPosition Console::drawWindow(WindowComposition windowComposition, short wi
 	switch (windowComposition)
 	{
 	case left:
-		height = internalHeight;
-		width = (internalWidth / 2) -2;
+		if (widthP && heightP) {
+			height = heightP+1;
+			width = widthP+1;
+		}else
+		{
+			height = internalHeight;
+			width = (internalWidth / 2) - 2;
+		}
 		x = 1;
 		y = 1;
 		break;

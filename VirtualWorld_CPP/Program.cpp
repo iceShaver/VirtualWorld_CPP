@@ -3,12 +3,14 @@
 #include <boost/filesystem.hpp>
 #include "Console.h"
 #include <iostream>
+#include <ctime>
 using namespace std;
 Program::Status Program::status;
 World * Program::world;
 Menu * Program::userMenu;
 void Program::init()
 {
+	srand(time(NULL));
 	status = menu;
 	world = nullptr;
 	userMenu = new Menu();
@@ -41,10 +43,13 @@ void Program::newGame()
 			continue;
 		}
 		Console::setCursorPos(Console::drawWindow(50, 2));
-		cout << "Podaj wymiary swiata x, y rozdzielone spacja: ";
+		cout << "Podaj wymiary swiata width, height rozdzielone spacja: ";
 		Console::refresh();
 		cin >> x >> y;
-		world = new World(name, x, y);
+		world = new World(name, x, y,
+			Console::drawWindow(WindowComposition::left, x + 1, y + 1),
+			Console::drawWindow(WindowComposition::right)
+			);
 		Program::setStatus(running);
 		break;
 	}
@@ -87,10 +92,8 @@ void Program::close()
 void Program::drawGameInterface()
 {
 	Console::clear();
-	WindowPosition areaPos = Console::drawWindow(WindowComposition::left);
-	WindowPosition reporterPos = Console::drawWindow(WindowComposition::top_right);
-	WindowPosition infoPos = Console::drawWindow(WindowComposition::bottom_right);
-
+	Console::drawWindow(WindowComposition::left, world->getWidth(), world->getHeight());
+	Console::drawWindow(WindowComposition::right);
 	//TODO: draw results of game, reporter and info
 
 
