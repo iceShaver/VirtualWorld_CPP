@@ -4,7 +4,8 @@
 class Turtle : public Animal
 {
 public:
-	Turtle();
+	Turtle(World* world, OrganismPositon organismPositon);
 	~Turtle();
+	void handleCollision(Organism*) override;
 };
 

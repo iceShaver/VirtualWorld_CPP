@@ -1,12 +1,17 @@
 #include "Dandelion.h"
+#include "Config.h"
 
 
-
-Dandelion::Dandelion()
+Dandelion::Dandelion(World* world, OrganismPositon organismPositon)
+	:Plant(world, cfg::DANDELION_STRENGTH, cfg::DANDELION_INITIATIVE, organismPositon, cfg::DANDELION_SYMBOL)
 {
 }
-
 
 Dandelion::~Dandelion()
 {
 }
+
+void Dandelion::handleCollision(Organism*)
+{
+}
+

@@ -4,7 +4,8 @@
 class DeadlyNightshade : public Plant
 {
 public:
-	DeadlyNightshade();
+	DeadlyNightshade(World* world, OrganismPositon organismPositon);
 	~DeadlyNightshade();
+	void handleCollision(Organism*) override;
 };
 

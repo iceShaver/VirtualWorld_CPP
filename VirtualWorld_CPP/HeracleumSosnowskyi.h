@@ -4,7 +4,8 @@
 class HeracleumSosnowskyi : public Plant
 {
 public:
-	HeracleumSosnowskyi();
+	HeracleumSosnowskyi(World* world, OrganismPositon organismPositon);
 	~HeracleumSosnowskyi();
+	void handleCollision(Organism*) override;
 };
 

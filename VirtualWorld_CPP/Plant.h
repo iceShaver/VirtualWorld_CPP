@@ -4,7 +4,8 @@
 class Plant : public Organism
 {
 public:
-	Plant();
+	void act() override;
+	Plant(World* world, unsigned short strength, unsigned short initiative, OrganismPositon organismPositon, const char symbol);
 	~Plant();
 };
 

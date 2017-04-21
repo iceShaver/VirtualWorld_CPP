@@ -76,7 +76,7 @@ void Menu::handle()
 		if (choice != menuPosition)
 		{
 			int mod = menuPosition % (int)positions->size();
-			menuPosition = (mod < 0 ? positions->size() + mod : mod);
+			menuPosition = (short)(mod < 0 ? positions->size() + mod : mod);
 			choice = (Function)menuPosition;
 		}
 		//while (_kbhit()) _getch();
@@ -90,7 +90,7 @@ void Menu::draw() const
 	short i = 1;
 	for (auto position : *positions)
 	{
-		Console::setCursorPos(winPos.x + ((width / 2) - (position->name.length() / 2)), winPos.y + i);
+		Console::setCursorPos((short)(winPos.x + ((width / 2) - (position->name.length() / 2))), winPos.y + i);
 		if (position->function == choice)
 			Console::setTextAttributes(10);
 		std::cout << position->name;

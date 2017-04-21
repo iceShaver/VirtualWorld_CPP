@@ -4,10 +4,10 @@
 #include <wincon.h>
 HANDLE Console::consoleHandle = NULL;
 HANDLE Console::bufferHandle = NULL;
-short Console::width = cfg::SCREEN_WIDTH;
-short Console::height = cfg::SCREEN_HEIGHT;
-short Console::internalWidth = width - 2;
-short Console::internalHeight = height - 3;
+uint8_t Console::width = cfg::SCREEN_WIDTH;
+uint8_t Console::height = cfg::SCREEN_HEIGHT;
+uint8_t Console::internalWidth = width - 2;
+uint8_t Console::internalHeight = height - 3;
 Console::Console()
 {
 }
@@ -16,7 +16,7 @@ Console::~Console()
 {
 }
 
-void Console::setCursorPos(short x, short y)
+void Console::setCursorPos(uint8_t x, uint8_t y)
 {
 	SetConsoleCursorPosition(consoleHandle, { x,y });
 }
@@ -51,12 +51,12 @@ void Console::drawFrame()
 	}
 }
 
-short Console::getWidth()
+uint8_t Console::getWidth()
 {
 	return width;
 }
 
-short Console::getHeight()
+uint8_t Console::getHeight()
 {
 	return height;
 }
@@ -72,12 +72,12 @@ void Console::refresh()
 	bufferCopy(consoleHandle, bufferHandle, width, height);
 }
 
-WindowPosition Console::drawWindow(short width, short height)
+WindowPosition Console::drawWindow(uint8_t width, uint8_t height)
 {
 	clear();
 	height++;
-	short x = (getWidth() / 2) - (width / 2);
-	short y = (getHeight() / 2) - (height / 2);
+	uint8_t x = (getWidth() / 2) - (width / 2);
+	uint8_t y = (getHeight() / 2) - (height / 2);
 	setCursorPos(x, y);
 	putchar(cfg::FRAME_CORNER_LT);
 	setCursorPos(x + width, y);
@@ -100,22 +100,57 @@ WindowPosition Console::drawWindow(short width, short height)
 		setCursorPos(x + width, i);
 		putchar(cfg::FRAME_VERTICAL);
 	}
-	return { x + 1, y + 1, width };
+	return { (uint8_t)(x + 1), (uint8_t)(y + 1), width, height };
 
 }
 
-WindowPosition Console::drawWindow(WindowComposition windowComposition, short widthP, short heightP)
+WindowPosition Console::drawWindow(WindowComposition windowComposition, uint8_t widthP, uint8_t heightP)
 {
 	//TODO: fix returned WindowPosition values
-	short width, height, x, y;
+	auto windowPosition = getWindowPosition(windowComposition, widthP, heightP);
+	windowPosition.x--;
+	windowPosition.y--;
+	uint8_t width = windowPosition.width;
+	uint8_t height = windowPosition.height;
+	uint8_t x = windowPosition.x;
+	uint8_t y = windowPosition.y;
+	setCursorPos(x, y);
+	putchar(cfg::FRAME_CORNER_LT);
+	setCursorPos(x + width, y);
+	putchar(cfg::FRAME_CORNER_RT);
+	setCursorPos(x, y + height);
+	putchar(cfg::FRAME_CORNER_LB);
+	setCursorPos(x + width, y + height);
+	putchar(cfg::FRAME_CORNER_RB);
+	for (int i = x + 1; i < width + x; ++i)
+	{
+		setCursorPos(i, y);
+		putchar(cfg::FRAME_HORIZONTAL);
+		setCursorPos(i, y + height);
+		putchar(cfg::FRAME_HORIZONTAL);
+	}
+	for (int i = y + 1; i < y + height; ++i)
+	{
+		setCursorPos(x, i);
+		putchar(cfg::FRAME_VERTICAL);
+		setCursorPos(x + width, i);
+		putchar(cfg::FRAME_VERTICAL);
+	}
+	return { uint8_t(x + 1), uint8_t(y + 1), width, height };
+}
+
+WindowPosition Console::getWindowPosition(WindowComposition windowComposition, uint8_t widthP, uint8_t heightP)
+{
+	uint8_t width, height, x, y;
 	//clear();
 	switch (windowComposition)
 	{
 	case left:
 		if (widthP && heightP) {
-			height = heightP+1;
-			width = widthP+1;
-		}else
+			height = heightP + 1;
+			width = widthP + 1;
+		}
+		else
 		{
 			height = internalHeight;
 			width = (internalWidth / 2) - 2;
@@ -125,45 +160,45 @@ WindowPosition Console::drawWindow(WindowComposition windowComposition, short wi
 		break;
 	case right:
 		height = internalHeight;
-		width = internalWidth /2;
+		width = internalWidth / 2;
 		x = internalWidth / 2;
 		y = 1;
 		break;
 	case top:
-		height = internalHeight /2;
+		height = internalHeight / 2;
 		width = internalWidth;
 		x = 1;
 		y = 1;
 		break;
 	case bottom:
-		height = (internalHeight /2)-1;
+		height = (internalHeight / 2) - 1;
 		width = internalWidth;
 		x = 1;
-		y = (internalHeight / 2)+2;
+		y = (internalHeight / 2) + 2;
 		break;
 	case top_left:
-		height = internalHeight /2;
-		width = (internalWidth /2)-2;
+		height = internalHeight / 2;
+		width = (internalWidth / 2) - 2;
 		x = 1;
 		y = 1;
 		break;
 	case top_right:
-		height = internalHeight /2;
-		width = internalWidth /2;
+		height = internalHeight / 2;
+		width = internalWidth / 2;
 		x = internalWidth / 2;
 		y = 1;
 		break;
 	case bottom_left:
-		height = (internalHeight /2)-1;
-		width = (internalWidth /2)-2;
+		height = (internalHeight / 2) - 1;
+		width = (internalWidth / 2) - 2;
 		x = 1;
-		y = (internalHeight /2)+2;
+		y = (internalHeight / 2) + 2;
 		break;
 	case bottom_right:
-		height = (internalHeight /2)-1;
-		width = internalWidth /2;
+		height = (internalHeight / 2) - 1;
+		width = internalWidth / 2;
 		x = internalWidth / 2;
-		y = (internalHeight /2)+2;
+		y = (internalHeight / 2) + 2;
 		break;
 	case full:
 		height = internalHeight;
@@ -171,8 +206,8 @@ WindowPosition Console::drawWindow(WindowComposition windowComposition, short wi
 		x = 1;
 		y = 1;
 		break;
-	case center: 
-		if(widthP && heightP)
+	case center:
+		if (widthP && heightP)
 		{
 			width = widthP;
 			height = heightP;
@@ -185,51 +220,27 @@ WindowPosition Console::drawWindow(WindowComposition windowComposition, short wi
 		x = (getWidth() / 2) - (width / 2);
 		y = (getHeight() / 2) - (height / 2);
 		break;
-	default: 
+	default:
 		x = 0;
 		y = 0;
 		height = 0;
 		width = 0;
 		break;
 	}
-	setCursorPos(x, y);
-	putchar(cfg::FRAME_CORNER_LT);
-	setCursorPos(x + width, y);
-	putchar(cfg::FRAME_CORNER_RT);
-	setCursorPos(x, y + height);
-	putchar(cfg::FRAME_CORNER_LB);
-	setCursorPos(x + width, y + height);
-	putchar(cfg::FRAME_CORNER_RB);
-	for (int i = x + 1; i < width + x; ++i)
-	{
-		setCursorPos(i, y);
-		putchar(cfg::FRAME_HORIZONTAL);
-		setCursorPos(i, y + height);
-		putchar(cfg::FRAME_HORIZONTAL);
-	}
-	for (int i = y + 1; i < y + height; ++i)
-	{
-		setCursorPos(x, i);
-		putchar(cfg::FRAME_VERTICAL);
-		setCursorPos(x + width, i);
-		putchar(cfg::FRAME_VERTICAL);
-	}
-	return { x + 1, y + 1, width, height };
+	return{ uint8_t(x + 1), uint8_t(y + 1), width, height };
 }
-
 
 
 void Console::bufferCopy(const HANDLE& src, HANDLE& dest, size_t width, size_t height)
 {
 	COORD bufferSize;
-	bufferSize.X = width;
-	bufferSize.Y = height;
+	bufferSize.X = (SHORT)width;
+	bufferSize.Y = (SHORT)height;
 	SMALL_RECT srcRect;
 	srcRect.Left = 0;
 	srcRect.Top = 0;
-	srcRect.Right = width - 1;
-	srcRect.Bottom = height -1;
-	SMALL_RECT destRect;
+	srcRect.Right = (SHORT)width - 1;
+	srcRect.Bottom = (SHORT)height -1;
 	CHAR_INFO * charInfoArray = new CHAR_INFO[width*height];
 	ReadConsoleOutput(src, charInfoArray, bufferSize, { 0,0 }, &srcRect);
 	WriteConsoleOutput(dest, charInfoArray, bufferSize, { 0,0 }, &srcRect);

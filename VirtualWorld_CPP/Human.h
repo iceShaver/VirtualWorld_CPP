@@ -4,7 +4,8 @@
 class Human : public Animal
 {
 public:
-	Human();
+	Human(World* world, OrganismPositon organismPositon);
 	~Human();
+	void handleCollision(Organism*) override;
 };
 

@@ -4,7 +4,8 @@
 class Dandelion : public Plant
 {
 public:
-	Dandelion();
+	Dandelion(World* world, OrganismPositon organismPositon);
 	~Dandelion();
+	void handleCollision(Organism*) override;
 };
 

@@ -1,12 +1,17 @@
 #include "Sheep.h"
+#include "Config.h"
 
 
-
-Sheep::Sheep()
+Sheep::Sheep(World* world, OrganismPositon organismPositon)
+	:Animal(world, cfg::SHEEP_STRENGTH, cfg::SHEEP_INITIATIVE, organismPositon, cfg::SHEEP_SYMBOL)
 {
 }
-
 
 Sheep::~Sheep()
 {
 }
+
+void Sheep::handleCollision(Organism*)
+{
+}
+

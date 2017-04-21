@@ -1,20 +1,27 @@
 #pragma once
-#include "World.h"
+#include <cstdint>
+//#include "World.h"
 class World;
+struct OrganismPositon { uint8_t x, y; };
 class Organism
 {
 public:
-	Organism();
-	explicit Organism(World&world, unsigned short strength, unsigned short priority, unsigned short x, unsigned short y);
+
+	explicit Organism(World* world, unsigned short strength, unsigned short initiative, OrganismPositon organismPositon, const char symbol);
 	virtual ~Organism();
-	virtual void Act()=0;
-	virtual void HandleCollision()=0;
-	virtual void Draw()=0;
-	virtual operator char()=0;
+	virtual void act()=0;
+	virtual void handleCollision(Organism*)=0;
+	virtual operator char();
+	//virtual void draw()=0;
+	OrganismPositon getOrganismPosition() const;
+	uint8_t getOrganismXPos() const;
+	uint8_t getOrganismYPos() const;
+protected:
+	OrganismPositon position;
+	const char symbol;
 private:
 	unsigned short strength;
-	unsigned short priority;
-	unsigned short x, y;
+	unsigned short initiative;
 	World * world;
 };
 

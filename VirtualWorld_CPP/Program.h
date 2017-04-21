@@ -20,6 +20,8 @@ public:
 	static void close();
 	static void drawGameInterface();
 	static void playTheGame();
+	static bool getProbability(double probability);
+	static int getRandomIntNumber(int floor, int ceiling);
 private:
 	static std::vector<std::string> * getFilesList();
 	static bool doesEntryExist(std::string fileName);

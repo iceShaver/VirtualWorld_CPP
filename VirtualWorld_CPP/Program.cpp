@@ -10,7 +10,7 @@ World * Program::world;
 Menu * Program::userMenu;
 void Program::init()
 {
-	srand(time(NULL));
+	srand(time(nullptr));
 	status = menu;
 	world = nullptr;
 	userMenu = new Menu();
@@ -43,12 +43,12 @@ void Program::newGame()
 			continue;
 		}
 		Console::setCursorPos(Console::drawWindow(50, 2));
-		cout << "Podaj wymiary swiata width, height rozdzielone spacja: ";
+		cout << "Podaj wymiary swiata szerokosc, wysokosc rozdzielone spacja: ";
 		Console::refresh();
 		cin >> x >> y;
 		world = new World(name, x, y,
-			Console::drawWindow(WindowComposition::left, x + 1, y + 1),
-			Console::drawWindow(WindowComposition::right)
+			Console::getWindowPosition(WindowComposition::left, x, y),
+			Console::getWindowPosition(WindowComposition::right)
 			);
 		Program::setStatus(running);
 		break;
@@ -95,8 +95,8 @@ void Program::drawGameInterface()
 	Console::drawWindow(WindowComposition::left, world->getWidth(), world->getHeight());
 	Console::drawWindow(WindowComposition::right);
 	//TODO: draw results of game, reporter and info
-
-
+	world->drawArea();
+	world->drawReporter();
 	Console::refresh();
 	getchar();
 }
@@ -105,6 +105,18 @@ void Program::playTheGame()
 {
 	world->playRound();
 	drawGameInterface();
+}
+
+bool Program::getProbability(double probability)
+{
+	double random = ((double)rand() / (RAND_MAX));
+	if (random <= probability) return true;
+	return false;
+}
+
+int Program::getRandomIntNumber(int floor, int ceiling)
+{
+	return rand()%ceiling+floor;
 }
 
 vector<string> * Program::getFilesList()
