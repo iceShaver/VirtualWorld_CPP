@@ -20,7 +20,6 @@ public:
 	//virtual void draw()=0;
 	OrganismPositon getOrganismPosition() const;
 	OrganismPositon * getRandomNeighbourPosition(uint8_t range = 1, bool mustBeEmpty = false) const;
-	OrganismPositon * getRandomEmptyNeighbourPosition() const;
 	uint8_t getOrganismXPos() const;
 	uint8_t getOrganismYPos() const;
 	virtual void increaseAge();

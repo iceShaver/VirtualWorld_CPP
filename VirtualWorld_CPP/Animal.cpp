@@ -5,23 +5,17 @@
 /**
  * \brief Looks for place around and moves to it;
  *  not found->no action;
- *  organism on dest place->call handleCollision(); 
+ *  organism on dest place->call handleCollision();
  */
 void Animal::act()
 {
-	OrganismPositon* newOrganismPositon;
-	for (int i = 0; i < 10; ++i)
-	{
-		if (newOrganismPositon = getRandomNeighbourPosition()) break;
-	}
+	OrganismPositon* newOrganismPositon = getRandomNeighbourPosition();
 	if (!newOrganismPositon) return;
 	Organism*neigbourOrganism = world->peekOrganism(*newOrganismPositon);
-	if(neigbourOrganism)
-	{
+	if (neigbourOrganism)
 		handleCollision(neigbourOrganism);
-	}
 	else
-	moveTo(newOrganismPositon);
+		moveTo(newOrganismPositon);
 }
 
 Animal::Animal(World* world, unsigned short strength, unsigned short initiative, OrganismPositon organismPositon, const char symbol)

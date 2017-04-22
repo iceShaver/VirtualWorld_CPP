@@ -19,6 +19,6 @@ void Antelope::handleCollision(Organism* organism)
 
 void Antelope::act()
 {
-
+	Animal::act();
 }
 

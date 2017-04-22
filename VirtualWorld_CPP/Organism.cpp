@@ -51,35 +51,56 @@ OrganismPositon * Organism::getRandomNeighbourPosition(uint8_t range, bool mustB
 	while (rect.top < 0) rect.top++;
 	while (rect.right > world->width - 1) rect.right--;
 	while (rect.bottom > world->height - 1)rect.bottom--;
-	short rectWidth = (rect.right - rect.left)+1;
-	short rectHeight = (rect.bottom - rect.top)+1;
+	short rectWidth = (rect.right - rect.left) + 1;
+	short rectHeight = (rect.bottom - rect.top) + 1;
 
 	OrganismPositon tmpPos = { rect.left, rect.top };
 	vector<OrganismPositon> whereCanMove;
 	//Search rect for empty places
 	for (;;)
 	{
-		if (world->peekOrganism(tmpPos) == nullptr)
-		{
-			whereCanMove.push_back(tmpPos);
-		}
-		if (tmpPos.x >= rect.right)
-		{
-			if (tmpPos.y >= rect.bottom)
+		if (mustBeEmpty) {
+			if (world->peekOrganism(tmpPos) == nullptr)
 			{
-				if (world->peekOrganism(tmpPos) == nullptr)
-					whereCanMove.push_back(tmpPos);
-				break;
-			};
-			tmpPos.y++;
-			tmpPos.x = rect.left;
-		}else
-		tmpPos.x++;
+				whereCanMove.push_back(tmpPos);
+			}
+			if (tmpPos.x >= rect.right)
+			{
+				if (tmpPos.y >= rect.bottom)
+				{
+					if (world->peekOrganism(tmpPos) == nullptr)
+						whereCanMove.push_back(tmpPos);
+					break;
+				}
+				tmpPos.y++;
+				tmpPos.x = rect.left;
+			}
+			else
+				tmpPos.x++;
+		}
+		else
+		{
+			if (!(tmpPos.x == position.x && tmpPos.y == position.y))
+				whereCanMove.push_back(tmpPos);
+			if (tmpPos.x >= rect.right)
+			{
+				if (tmpPos.y >= rect.bottom)
+				{
+					if (!(tmpPos.x == position.x && tmpPos.y == position.y))
+						whereCanMove.push_back(tmpPos);
+					break;
+				};
+				tmpPos.y++;
+				tmpPos.x = rect.left;
+			}
+			else
+				tmpPos.x++;
+		}
 	}
 	int randomLimit = whereCanMove.size();
 	if (!randomLimit) return nullptr;
 	if (randomLimit == 1)  return new OrganismPositon{ whereCanMove[0].x, whereCanMove[0].y };
-	int randomNumber = Program::getRandomIntNumber(0, randomLimit-1);
+	int randomNumber = Program::getRandomIntNumber(0, randomLimit - 1);
 	return new OrganismPositon{ whereCanMove[randomNumber].x, whereCanMove[randomNumber].y };
 
 
@@ -136,11 +157,6 @@ OrganismPositon * Organism::getRandomNeighbourPosition(uint8_t range, bool mustB
 		return nullptr;
 		break;
 	}*/
-}
-
-OrganismPositon * Organism::getRandomEmptyNeighbourPosition() const
-{
-	return nullptr;
 }
 
 uint8_t Organism::getOrganismXPos() const
