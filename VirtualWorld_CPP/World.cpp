@@ -18,7 +18,7 @@
 #include <set>
 
 World::World(string name, uint8_t x, uint8_t y, WindowPosition areaPos, WindowPosition reporterPos)
-	: name(name), reporter(new Reporter), areaPos(areaPos), reporterPos(reporterPos), width(x), height(y), overallTime(0), currentSessionTime(0), totalFields(x*y)
+	: name(name), reporter(new Reporter(this, reporterPos)), areaPos(areaPos), reporterPos(reporterPos), width(x), height(y), overallTime(0), currentSessionTime(0), totalFields(x*y)
 {
 	organismsArea = new Organism*[totalFields];
 	for (int i = 0; i < totalFields; ++i)
@@ -132,28 +132,30 @@ void World::drawArea()
 		}
 
 	}
-	Console::setCursorPos(reporterPos);
-	int x = reporterPos.x;
-	for (int i = 0; i < totalFields; ++i)
-	{
-		if (organismsArea[i]) {
-			cout << *organismsArea[i];
-			Console::newLine(x);
-		}
+	if (cfg::DEBUG) {
+		//Console::setCursorPos(Console::getWidth()-10, 4);
+		int x = Console::getWidth()-10;
+		/*for (int i = 0; i < totalFields; ++i)
+		{
+			if (organismsArea[i]) {
+				cout << *organismsArea[i];
+				Console::nextLine(x);
+			}
 
-	}
-	x += 5;
-	Console::setCursorPos(x, reporterPos.y);
-	for (auto organism : priorityQueue)
-	{
-		cout << *organism << " " << organism->getInitiative() << " " << organism->getAge();
-		Console::newLine(x);
+		}
+		x += 5;*/
+		Console::setCursorPos(x, 3);
+		for (auto organism : priorityQueue)
+		{
+			cout << *organism << " " << organism->getInitiative() << " " << organism->getAge();
+			Console::nextLine(x);
+		}
 	}
 }
 
 void World::drawReporter()
 {
-
+	reporter->printMessages();
 }
 
 void World::pushOrganism(Organism*organism)
@@ -180,6 +182,12 @@ void World::moveOrganism(const OrganismPositon& src, const OrganismPositon& dest
 		organismsArea[srcIndex] = nullptr;
 	}
 }
+
+void World::newMessage(string message, const Organism* organism) const
+{
+	reporter->newMessage(message, organism);
+}
+
 void World::deleteOrganism(OrganismPositon organismPositon)
 {
 	int index = organismPositon.y*width + organismPositon.x;

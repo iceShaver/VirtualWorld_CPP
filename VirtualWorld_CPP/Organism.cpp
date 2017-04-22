@@ -2,6 +2,13 @@
 #include "World.h"
 #include "Program.h"
 
+OrganismPositon::operator basic_string<char>() const
+{
+	stringstream ss;
+	ss << "(" << (int)x << "," << (int)y << ")";
+	return ss.str();
+}
+
 bool Organism::Comparator::operator()(const Organism* left, const Organism* right) const
 {
 	bool result;
@@ -11,8 +18,8 @@ bool Organism::Comparator::operator()(const Organism* left, const Organism* righ
 
 }
 
-Organism::Organism(World * world, unsigned short strength, unsigned short initiative, OrganismPositon organismPositon, const char symbol)
-	:world(world), strength(strength), initiative(initiative), position(organismPositon), symbol(symbol), age(0)
+Organism::Organism(World * world, unsigned short strength, unsigned short initiative, OrganismPositon organismPositon, const char symbol, std::string name)
+	:world(world), strength(strength), initiative(initiative), position(organismPositon), symbol(symbol),name(name), age(0)
 {}
 
 
@@ -182,5 +189,10 @@ uint32_t Organism::getAge() const
 unsigned short Organism::getInitiative()
 {
 	return initiative;
+}
+
+std::string Organism::getName()const
+{
+	return name;
 }
 

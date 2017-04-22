@@ -3,7 +3,7 @@
 #include "World.h"
 
 Antelope::Antelope(World* world, OrganismPositon organismPositon)
-	:Animal(world, cfg::ANTELOPE_STRENGTH, cfg::ANTELOPE_INITIATIVE, organismPositon, cfg::ANTELOPE_SYMBOL)
+	:Animal(world, cfg::ANTELOPE_STRENGTH, cfg::ANTELOPE_INITIATIVE, organismPositon, cfg::ANTELOPE_SYMBOL, "Antylopa")
 {
 
 }
@@ -19,6 +19,14 @@ void Antelope::handleCollision(Organism* organism)
 
 void Antelope::act()
 {
-	Animal::act();
+	OrganismPositon* newOrganismPositon = getRandomNeighbourPosition(2);
+	if (!newOrganismPositon) return;
+	Organism*neigbourOrganism = world->peekOrganism(*newOrganismPositon);
+	if (neigbourOrganism)
+		handleCollision(neigbourOrganism);
+	else {
+		moveTo(newOrganismPositon);
+	}
+	delete newOrganismPositon;
 }
 

@@ -3,7 +3,7 @@
 
 
 Turtle::Turtle(World* world, OrganismPositon organismPositon)
-	:Animal(world, cfg::TURTLE_STRENGTH, cfg::TURTLE_INITIATIVE, organismPositon, cfg::TURTLE_SYMBOL)
+	:Animal(world, cfg::TURTLE_STRENGTH, cfg::TURTLE_INITIATIVE, organismPositon, cfg::TURTLE_SYMBOL, "Zolw")
 {
 }
 

@@ -3,7 +3,7 @@
 
 
 Dandelion::Dandelion(World* world, OrganismPositon organismPositon)
-	:Plant(world, cfg::DANDELION_STRENGTH, cfg::DANDELION_INITIATIVE, organismPositon, cfg::DANDELION_SYMBOL)
+	:Plant(world, cfg::DANDELION_STRENGTH, cfg::DANDELION_INITIATIVE, organismPositon, cfg::DANDELION_SYMBOL, "Mlecz")
 {
 }
 

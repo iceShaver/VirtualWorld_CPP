@@ -3,7 +3,7 @@
 
 
 Fox::Fox(World* world, OrganismPositon organismPositon)
-	:Animal(world, cfg::FOX_STRENGTH, cfg::FOX_INITIATIVE, organismPositon, cfg::FOX_SYMBOL)
+	:Animal(world, cfg::FOX_STRENGTH, cfg::FOX_INITIATIVE, organismPositon, cfg::FOX_SYMBOL, "Lis")
 {
 }
 

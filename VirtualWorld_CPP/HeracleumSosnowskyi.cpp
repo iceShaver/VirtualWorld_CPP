@@ -3,7 +3,7 @@
 
 
 HeracleumSosnowskyi::HeracleumSosnowskyi(World* world, OrganismPositon organismPositon)
-	:Plant(world, cfg::HARACLEUM_SOSNOWSKYI_STRENGTH, cfg::HERACLEUM_SOSNOWSKYI_INITIATIVE, organismPositon, cfg::HERACLEUM_SOSNOWSKYI_SYMBOL)
+	:Plant(world, cfg::HARACLEUM_SOSNOWSKYI_STRENGTH, cfg::HERACLEUM_SOSNOWSKYI_INITIATIVE, organismPositon, cfg::HERACLEUM_SOSNOWSKYI_SYMBOL, "Barszcz sosnowskiego")
 {
 }
 

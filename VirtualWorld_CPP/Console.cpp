@@ -33,10 +33,18 @@ COORD Console::getCursorPos()
 	return csbi.dwCursorPosition;
 }
 
-void Console::newLine(uint8_t xPos)
+void Console::nextLine(uint8_t xPos)
 {
 	COORD position = getCursorPos();
 	position.Y++;
+	position.X = xPos;
+	setCursorPos({ (uint8_t)position.X, (uint8_t)position.Y });
+}
+
+void Console::prevLine(uint8_t xPos)
+{
+	COORD position = getCursorPos();
+	position.Y--;
 	position.X = xPos;
 	setCursorPos({ (uint8_t)position.X, (uint8_t)position.Y });
 }

@@ -3,7 +3,7 @@
 
 
 Human::Human(World* world, OrganismPositon organismPositon)
-	:Animal(world, cfg::HUMAN_STRENGTH, cfg::HUMAN_INITIATIVE, organismPositon, cfg::HUMAN_SYMBOL)
+	:Animal(world, cfg::HUMAN_STRENGTH, cfg::HUMAN_INITIATIVE, organismPositon, cfg::HUMAN_SYMBOL, "Czlowiek")
 {
 }
 

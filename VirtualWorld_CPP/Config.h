@@ -3,6 +3,9 @@
 
 namespace cfg
 {
+
+	const bool DEBUG = true;
+
 	const std::string SAVE_DIR = ".";
 	const std::string SAVE_EXT = "bin";
 	const short MENU_HEIGHT = 10;

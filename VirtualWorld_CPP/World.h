@@ -39,6 +39,7 @@ public:
 	void deleteOrganism(Organism*);
 	Organism*peekOrganism(OrganismPositon) const;
 	void moveOrganism(const OrganismPositon& src, const OrganismPositon& dest);
+	void newMessage(string message,const Organism*organism = nullptr) const;
 private:
 	OrganismPositon  getRandomOrganismPosition() const;
 	OrganismPositon getRandomEmptyOrganismPosition()const;

@@ -126,7 +126,7 @@ int Program::getRandomIntNumber(int floor, int ceiling)
 void Program::drawInstruction(WindowPosition windowPosition)
 {
 	uint8_t x = windowPosition.x;
-	void(*newLine)(uint8_t) = Console::newLine;
+	void(*newLine)(uint8_t) = Console::nextLine;
 	Console::setCursorPos(windowPosition);
 	cout << "Instrukcja gry";
 	newLine(x);
