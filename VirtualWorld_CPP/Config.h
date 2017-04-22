@@ -22,14 +22,14 @@ namespace cfg
 	//Organisms symbols
 	const char ANTELOPE_SYMBOL = 'A';
 	const char CYBER_SHEEP_SYMBOL = 'C';
-	const char DANDELION_SYMBOL = 'M';
-	const char DEADLY_NIGHTSHADE_SYMBOL = 'J';
+	const char DANDELION_SYMBOL = 'm';
+	const char DEADLY_NIGHTSHADE_SYMBOL = 'j';
 	const char FOX_SYMBOL = 'L';
-	const char GRASS_SYMBOL = 'T';
-	const char GUARANA_SYMBOL = 'G';
-	const char HERACLEUM_SOSNOWSKYI_SYMBOL = 'B';
+	const char GRASS_SYMBOL = 't';
+	const char GUARANA_SYMBOL = 'g';
+	const char HERACLEUM_SOSNOWSKYI_SYMBOL = 'b';
 	const char HUMAN_SYMBOL = 'H';
-	const char SHEEP_SYMBOL = 'S';
+	const char SHEEP_SYMBOL = 'O';
 	const char TURTLE_SYMBOL = 'Z';
 	const char WOLF_SYMBOL = 'W';
 
@@ -62,4 +62,7 @@ namespace cfg
 	const uint8_t TURTLE_INITIATIVE = 1;
 	const uint8_t WOLF_INITIATIVE = 5;
 
+
+	const double ORGANISM_FULFILLMENT_RATIO = 0.1;
+	const size_t INITIATIVES_NUMBER = 8;
 }

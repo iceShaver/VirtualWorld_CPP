@@ -22,6 +22,7 @@ public:
 	static void playTheGame();
 	static bool getProbability(double probability);
 	static int getRandomIntNumber(int floor, int ceiling);
+	static void drawInstruction(WindowPosition);
 private:
 	static std::vector<std::string> * getFilesList();
 	static bool doesEntryExist(std::string fileName);

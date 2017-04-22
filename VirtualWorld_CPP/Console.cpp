@@ -24,7 +24,21 @@ void Console::setCursorPos(uint8_t x, uint8_t y)
 void Console::setCursorPos(WindowPosition winPos)
 {
 	SetConsoleCursorPosition(consoleHandle, { winPos.x,winPos.y });
+}
 
+COORD Console::getCursorPos()
+{
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(consoleHandle, &csbi);
+	return csbi.dwCursorPosition;
+}
+
+void Console::newLine(uint8_t xPos)
+{
+	COORD position = getCursorPos();
+	position.Y++;
+	position.X = xPos;
+	setCursorPos({ (uint8_t)position.X, (uint8_t)position.Y });
 }
 
 void Console::clear()

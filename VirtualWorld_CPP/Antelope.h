@@ -7,5 +7,6 @@ public:
 	Antelope(World* world, OrganismPositon organismPositon);
 	~Antelope();
 	void handleCollision(Organism*) override;
+	void act() override;
 };
 

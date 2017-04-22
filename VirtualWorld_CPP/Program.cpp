@@ -4,6 +4,7 @@
 #include "Console.h"
 #include <iostream>
 #include <ctime>
+#include "Keyboard.h"
 using namespace std;
 Program::Status Program::status;
 World * Program::world;
@@ -48,7 +49,7 @@ void Program::newGame()
 		cin >> x >> y;
 		world = new World(name, x, y,
 			Console::getWindowPosition(WindowComposition::left, x, y),
-			Console::getWindowPosition(WindowComposition::right)
+			Console::getWindowPosition(WindowComposition::bottom_right)
 			);
 		Program::setStatus(running);
 		break;
@@ -93,18 +94,21 @@ void Program::drawGameInterface()
 {
 	Console::clear();
 	Console::drawWindow(WindowComposition::left, world->getWidth(), world->getHeight());
-	Console::drawWindow(WindowComposition::right);
+	Console::drawWindow(WindowComposition::bottom_right);
 	//TODO: draw results of game, reporter and info
+	drawInstruction(Console::drawWindow(WindowComposition::top_right));
 	world->drawArea();
 	world->drawReporter();
 	Console::refresh();
-	getchar();
 }
 
 void Program::playTheGame()
 {
 	world->playRound();
 	drawGameInterface();
+	//fflush(stdin);
+	while (Keyboard::getKey() != KEY_ENTER);
+
 }
 
 bool Program::getProbability(double probability)
@@ -117,6 +121,50 @@ bool Program::getProbability(double probability)
 int Program::getRandomIntNumber(int floor, int ceiling)
 {
 	return rand()%ceiling+floor;
+}
+
+void Program::drawInstruction(WindowPosition windowPosition)
+{
+	uint8_t x = windowPosition.x;
+	void(*newLine)(uint8_t) = Console::newLine;
+	Console::setCursorPos(windowPosition);
+	cout << "Instrukcja gry";
+	newLine(x);
+	newLine(x);
+	cout << "1. Oznaczenia organizmow:";
+	newLine(x+=3);
+	cout << "A - antylopa";
+	newLine(x);
+	cout << "C - cyber-owca";
+	newLine(x);
+	cout << "M - mlecz";
+	newLine(x);
+	cout << "J - wilcza jagoda";
+	newLine(x);
+	cout << "L - lis";
+	newLine(x);
+	cout << "T - trawa";
+	newLine(x);
+	cout << "G - guarana";
+	newLine(x);
+	cout << "B - barszcz sosnowskiego";
+	newLine(x);
+	cout << "H - czlowiek";
+	newLine(x);
+	cout << "O - owca";
+	newLine(x);
+	cout << "Z - zolw";
+	newLine(x);
+	cout << "W - wilk";
+	newLine(x-=3);
+	newLine(x);
+	cout << "2. Sterowanie:";
+	newLine(x+=3);
+	cout << "[ENTER] - wykonaj ture";
+	newLine(x);
+	cout << "[STRZALKI] - wykonaj ruch czlowiekiem (gdy jego kolej)";
+
+
 }
 
 vector<string> * Program::getFilesList()

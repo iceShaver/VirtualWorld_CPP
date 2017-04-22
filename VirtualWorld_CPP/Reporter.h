@@ -1,8 +1,8 @@
 #pragma once
+#include <string>
+
 class Reporter
 {
-public:
-	Reporter();
-	~Reporter();
+
 };
 

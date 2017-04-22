@@ -1,8 +1,27 @@
 #include "Animal.h"
+#include "World.h"
+#include <iostream>
 
+/**
+ * \brief Looks for place around and moves to it;
+ *  not found->no action;
+ *  organism on dest place->call handleCollision(); 
+ */
 void Animal::act()
 {
-	moveTo(getRandomNeighbourPlace());
+	OrganismPositon* newOrganismPositon;
+	for (int i = 0; i < 10; ++i)
+	{
+		if (newOrganismPositon = getRandomNeighbourPosition()) break;
+	}
+	if (!newOrganismPositon) return;
+	Organism*neigbourOrganism = world->peekOrganism(*newOrganismPositon);
+	if(neigbourOrganism)
+	{
+		handleCollision(neigbourOrganism);
+	}
+	else
+	moveTo(newOrganismPositon);
 }
 
 Animal::Animal(World* world, unsigned short strength, unsigned short initiative, OrganismPositon organismPositon, const char symbol)
@@ -13,14 +32,14 @@ Animal::~Animal()
 {
 }
 
-OrganismPositon Animal::getRandomNeighbourPlace() const
-{
-	//TODO: compute random neighbour place
-	OrganismPositon organismPositon;
-	return organismPositon;
-}
 
-void Animal::moveTo(OrganismPositon position)
+
+void Animal::moveTo(OrganismPositon * position)
 {
-	this->position = position;
+	if (position != nullptr && world->peekOrganism(*position) == nullptr) {
+		world->moveOrganism(this->position, *position);
+		this->position.x = position->x;
+		this->position.y = position->y;
+		delete position;
+	}
 }

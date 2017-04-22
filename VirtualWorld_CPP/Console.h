@@ -16,6 +16,8 @@ public:
 	static void init();
 	static void setCursorPos(uint8_t x, uint8_t y);
 	static void setCursorPos(WindowPosition winPos);
+	static COORD getCursorPos();
+	static void newLine(uint8_t xPos);
 	static void clear();
 	static void drawFrame();
 	static uint8_t getWidth();
