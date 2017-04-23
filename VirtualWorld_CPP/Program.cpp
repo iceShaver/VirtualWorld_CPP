@@ -104,10 +104,10 @@ void Program::drawGameInterface()
 
 void Program::playTheGame()
 {
-	world->playRound();
 	drawGameInterface();
-	//fflush(stdin);
 	world->handleRoundInput();
+	world->playRound();
+	//fflush(stdin);
 }
 
 bool Program::getProbability(double probability)

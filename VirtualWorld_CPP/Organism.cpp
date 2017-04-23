@@ -24,13 +24,21 @@ bool Organism::Comparator::operator()(const Organism* left, const Organism* righ
 
 }
 
+bool Organism::EqualityComparator::operator()(const Organism& left, const Organism& right) const
+{
+	if (&left == &right) return true;
+	return false;
+}
+
+
 Organism::Organism(World * world, unsigned short strength, unsigned short initiative, OrganismPositon organismPositon, const char symbol, std::string name)
-	:world(world), strength(strength), initiative(initiative), position(organismPositon), symbol(symbol),name(name), age(0)
+	:world(world), strength(strength), initiative(initiative), position(organismPositon), symbol(symbol), name(name), age(0)
 {}
 
 
 Organism::~Organism()
 {
+	world->newMessage("umiera ", this);
 }
 
 Organism::operator char()
@@ -43,6 +51,12 @@ std::string Organism::toString()const
 	stringstream ss;
 	ss << name << " (" << (int)position.x << "," << (int)position.y << ")";
 	return ss.str();
+}
+
+bool Organism::operator==(const Organism& other) const
+{
+	if (this == &other) return true;
+	return false;
 }
 
 OrganismPositon Organism::getOrganismPosition() const
@@ -207,5 +221,11 @@ unsigned short Organism::getInitiative()
 std::string Organism::getName()const
 {
 	return name;
+}
+
+bool Organism::resistsAttack(const Organism* otherOrganism)
+{
+	if (this->strength > otherOrganism->strength) return true;
+	return false;
 }
 

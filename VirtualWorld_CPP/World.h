@@ -45,16 +45,20 @@ public:
 	void handleRoundInput();
 	void setHumanMoveDirection(Human::MovementDirection movementDirection);
 	Human::MovementDirection getHumanMoveDirection();
+	void deleteOrganisms();
 private:
 	OrganismPositon  getRandomOrganismPosition() const;
 	OrganismPositon getRandomEmptyOrganismPosition()const;
 	string name;
 	uint16_t width, height,totalFields;
 	uint32_t overallTime, currentSessionTime;
-	Organism**organismsArea;
+	//Organism**organismsArea;
+	vector<vector<Organism*>> *organismsArea;
 	Reporter * reporter;
 	WindowPosition areaPos, reporterPos;
 	multiset<Organism*,Organism::Comparator> priorityQueue;
+	multiset<Organism*, Organism::Comparator>::iterator newIterator;
+	vector<Organism*> organismsToRemoveFromMultiset;
 	Human*human;
 	//double fulfillmentRatio;
 	friend Organism;

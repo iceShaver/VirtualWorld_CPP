@@ -27,9 +27,18 @@ Animal::~Animal()
 {
 }
 
-void Animal::handleCollision(Organism* organism)
+void Animal::handleCollision(Organism* otherOrganism)
 {
-	world->newMessage("* ", this, organism);
+	world->newMessage("* ", this, otherOrganism);
+	if(otherOrganism->resistsAttack(this))
+	{
+		world->newMessage("< ", this, otherOrganism);
+		//world->deleteOrganism(this);
+	}else
+	{
+		world->newMessage("> ", this, otherOrganism);
+		world->deleteOrganism(otherOrganism);
+	}
 }
 
 
