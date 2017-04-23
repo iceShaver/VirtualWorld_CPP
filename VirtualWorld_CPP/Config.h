@@ -68,4 +68,5 @@ namespace cfg
 
 	const double ORGANISM_FULFILLMENT_RATIO = 0.1;
 	const size_t INITIATIVES_NUMBER = 8;
+	const short TURTLE_RESIST_MAX_STRENGTH = 5;
 }

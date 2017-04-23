@@ -26,7 +26,7 @@ World::World(string name, uint8_t x, uint8_t y, WindowPosition areaPos, WindowPo
 	//organismsArea = new Organism*[totalFields];
 	//for (int i = 0; i < totalFields; ++i)
 	//	organismsArea[i] = nullptr;
-	organismsArea = new vector<vector<Organism*>>(x+10, vector<Organism*>(y+10));
+	organismsArea = new vector<vector<Organism*>>(x + 10, vector<Organism*>(y + 10));
 	for (int i = 0; i < x; ++i)
 	{
 		for (int j = 0; j < y; ++j)
@@ -112,14 +112,16 @@ World::~World()
 void World::playRound()
 {
 	vector<Organism*> organismsToDelete;
+	for (auto organism : priorityQueue)
+		organism->increaseAge();
 	for (multiset<Organism*, Organism::Comparator>::iterator it = priorityQueue.begin(); it != priorityQueue.end(); )
 	{
-		(*it)->increaseAge();
 		(*it)->act();
 		if (newIterator != priorityQueue.end()) {
 			it = newIterator;
 			newIterator = priorityQueue.end();
-		} else ++it;
+		}
+		else ++it;
 
 	}
 	//deleteOrganisms();
@@ -152,7 +154,7 @@ void World::drawArea()
 				cout << *(*organismsArea)[i][j];
 			}
 		}
-		
+
 
 	}
 	if (cfg::DEBUG) {
@@ -167,12 +169,12 @@ void World::drawArea()
 
 		}
 		x += 5;*/
-		//Console::setCursorPos(x, 3);
-		//for (auto organism : priorityQueue)
-		//{
-		//	cout << *organism << " " << organism->getInitiative() << " " << organism->getAge();
-		//	Console::nextLine(x);
-		//}
+		Console::setCursorPos(x, 3);
+		for (auto organism : priorityQueue)
+		{
+			cout << *organism << " " << organism->getInitiative() << " " << organism->getAge();
+			Console::nextLine(x);
+		}
 	}
 }
 
@@ -253,14 +255,13 @@ void World::handleRoundInput()
 
 }
 
-void World::setHumanMoveDirection(Human::MovementDirection movementDirection)
-{
 
-}
 
 Human::MovementDirection World::getHumanMoveDirection()
 {
-	return human->getMovementDirection();
+	if (human)
+		return human->getMovementDirection();
+	return Human::undefined;
 }
 
 

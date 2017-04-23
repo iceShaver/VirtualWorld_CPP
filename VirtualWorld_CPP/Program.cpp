@@ -127,6 +127,8 @@ void Program::drawInstruction(WindowPosition windowPosition)
 	uint8_t x = windowPosition.x;
 	void(*newLine)(uint8_t) = Console::nextLine;
 	Console::setCursorPos(windowPosition);
+	cout << "Autor: Kamil Krolikowski 165253";
+	newLine(x);
 	cout << "Instrukcja gry";
 	newLine(x);
 	newLine(x);
@@ -162,8 +164,10 @@ void Program::drawInstruction(WindowPosition windowPosition)
 	cout << "[ENTER] - wykonaj ture";
 	newLine(x);
 	cout << "[STRZALKI] - okresl kierunek ruchu czlowieka";
-	newLine(x);
-	cout << "Obecny kierunek ruchu czlowieka: " << world->getHumanMoveDirection();
+	if (world->human) {
+		newLine(x);
+		cout << "Obecny kierunek ruchu czlowieka: " << world->getHumanMoveDirection();
+	}
 
 
 }

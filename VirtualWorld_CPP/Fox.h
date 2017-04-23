@@ -7,5 +7,6 @@ public:
 	Fox(World* world, OrganismPositon organismPositon);
 	~Fox();
 	void handleCollision(Organism*) override;
+	void act()override;
 };
 

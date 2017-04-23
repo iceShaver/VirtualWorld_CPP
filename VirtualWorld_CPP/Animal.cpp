@@ -29,16 +29,27 @@ Animal::~Animal()
 
 void Animal::handleCollision(Organism* otherOrganism)
 {
+	OrganismPositon* newOrganismPositon = new OrganismPositon{otherOrganism->getOrganismXPos(), otherOrganism->getOrganismYPos()};
 	world->newMessage("* ", this, otherOrganism);
-	if(otherOrganism->resistsAttack(this))
+	ResistType result = otherOrganism->resistsAttack(this);
+	if(result == kill)
 	{
 		world->newMessage("< ", this, otherOrganism);
-		//world->deleteOrganism(this);
-	}else
+		world->deleteOrganism(this);
+	}else if(result == surrender)
 	{
 		world->newMessage("> ", this, otherOrganism);
 		world->deleteOrganism(otherOrganism);
+		moveTo(newOrganismPositon);
+	}else if(result==moveToPreviousPlace)
+	{
+		world->newMessage("zostaje odepchniety przez ", this, otherOrganism);
+	}else if(result==escape)
+	{
+		world->newMessage("wyploszyl ", this, otherOrganism);
+		moveTo(newOrganismPositon);
 	}
+	delete newOrganismPositon;
 }
 
 

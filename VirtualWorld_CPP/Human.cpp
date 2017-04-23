@@ -9,6 +9,7 @@ Human::Human(World* world, OrganismPositon organismPositon)
 
 Human::~Human()
 {
+	world->human = nullptr;
 }
 
 void Human::handleCollision(Organism*otherOrganism)

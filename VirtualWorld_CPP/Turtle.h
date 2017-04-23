@@ -7,5 +7,7 @@ public:
 	Turtle(World* world, OrganismPositon organismPositon);
 	~Turtle();
 	void handleCollision(Organism*) override;
+	void act()override;
+	ResistType resistsAttack(const Organism* otherOrganism) override;
 };
 

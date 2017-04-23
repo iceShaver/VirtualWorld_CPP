@@ -17,6 +17,7 @@
 #include <queue>
 #include <boost/heap/priority_queue.hpp>
 #include <set>
+class Program;
 class Sheep;
 class Antelope;
 using namespace std;
@@ -43,7 +44,6 @@ public:
 	bool checkIfPlaceIsValidAndEmpty(short x, short y) const;
 	bool checkIfPlaceIsValid(short x, short y) const;
 	void handleRoundInput();
-	void setHumanMoveDirection(Human::MovementDirection movementDirection);
 	Human::MovementDirection getHumanMoveDirection();
 	void deleteOrganisms();
 private:
@@ -62,5 +62,7 @@ private:
 	Human*human;
 	//double fulfillmentRatio;
 	friend Organism;
+	friend Human;
+	friend Program;
 };
 

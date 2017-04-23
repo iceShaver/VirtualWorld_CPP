@@ -336,6 +336,6 @@ void Console::init()
 	SetConsoleCursorInfo(bufferHandle, &cursorInfo);
 	setTextAttributes(15);
 	//TODO: Fix console double buffering
-	//SetConsoleActiveScreenBuffer(bufferHandle);
+	SetConsoleActiveScreenBuffer(bufferHandle);
 
 }

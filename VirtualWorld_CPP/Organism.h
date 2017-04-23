@@ -13,15 +13,13 @@ enum OrganismType{antelope,cyberSheep, dandelion, deadlyNightshade, fox, grass, 
 class Organism
 {
 public:
+	enum NeighbourPlaceSearchMode{all, onlyEmpty, emptyOrWithWeakOrganism};
+	enum ResistType{surrender ,moveToPreviousPlace, kill, escape };
 	struct Comparator
 	{
 		bool operator()(const Organism* left, const Organism*right)const;
 	};
-	struct EqualityComparator
-	{
-		bool operator()(const Organism& left, const Organism&right)const;
 
-	};
 	explicit Organism(World* world, unsigned short strength, unsigned short initiative, OrganismPositon organismPositon, const char symbol, std::string name);
 	virtual ~Organism();
 	virtual void act()=0;
@@ -31,21 +29,22 @@ public:
 	bool operator==( const Organism&other)const;
 	//virtual void draw()=0;
 	OrganismPositon getOrganismPosition() const;
-	OrganismPositon * getRandomNeighbourPosition(uint8_t range = 1, bool mustBeEmpty = false) const;
+	OrganismPositon * getRandomNeighbourPosition(uint8_t range = 1, NeighbourPlaceSearchMode neighbourPlaceSearchMode = all) const;
+	short getStrength()const;
 	uint8_t getOrganismXPos() const;
 	uint8_t getOrganismYPos() const;
 	virtual void increaseAge();
 	uint32_t getAge()const;
 	unsigned short getInitiative();
 	std::string getName()const;
-	virtual bool resistsAttack(const Organism* otherOrganism);
+	virtual ResistType resistsAttack(const Organism* otherOrganism);
 protected:
+	unsigned short strength;
 	OrganismPositon position;
 	const char symbol;
 	uint32_t age;
 	World * world;
 private:
-	unsigned short strength;
 	unsigned short initiative;
 	std::string name;
 

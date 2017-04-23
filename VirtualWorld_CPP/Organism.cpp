@@ -24,12 +24,6 @@ bool Organism::Comparator::operator()(const Organism* left, const Organism* righ
 
 }
 
-bool Organism::EqualityComparator::operator()(const Organism& left, const Organism& right) const
-{
-	if (&left == &right) return true;
-	return false;
-}
-
 
 Organism::Organism(World * world, unsigned short strength, unsigned short initiative, OrganismPositon organismPositon, const char symbol, std::string name)
 	:world(world), strength(strength), initiative(initiative), position(organismPositon), symbol(symbol), name(name), age(0)
@@ -72,7 +66,7 @@ OrganismPositon Organism::getOrganismPosition() const
  * \param mustBeEmpty Set true of the place you want have to be empty
  * \return ptr to OrganismPosition if found, else nullptr
  */
-OrganismPositon * Organism::getRandomNeighbourPosition(uint8_t range, bool mustBeEmpty) const
+OrganismPositon * Organism::getRandomNeighbourPosition(uint8_t range, NeighbourPlaceSearchMode neighbourPlaceSearchMode) const
 {
 	RECT rect;
 	rect.left = position.x - range;
@@ -93,7 +87,7 @@ OrganismPositon * Organism::getRandomNeighbourPosition(uint8_t range, bool mustB
 	//Search rect for empty places
 	for (;;)
 	{
-		if (mustBeEmpty) {
+		if (neighbourPlaceSearchMode == onlyEmpty) {
 			if (world->peekOrganism(tmpPos) == nullptr)
 			{
 				whereCanMove.push_back(tmpPos);
@@ -112,15 +106,15 @@ OrganismPositon * Organism::getRandomNeighbourPosition(uint8_t range, bool mustB
 			else
 				tmpPos.x++;
 		}
-		else
+		else if(neighbourPlaceSearchMode == all)
 		{
-			if (!(tmpPos.x == position.x && tmpPos.y == position.y))
+			if (!(tmpPos.x == position.x && tmpPos.y == position.y) && !(tmpPos==position))
 				whereCanMove.push_back(tmpPos);
 			if (tmpPos.x >= rect.right)
 			{
 				if (tmpPos.y >= rect.bottom)
 				{
-					if (!(tmpPos.x == position.x && tmpPos.y == position.y))
+					if (!(tmpPos.x == position.x && tmpPos.y == position.y) && !(tmpPos == position))
 						whereCanMove.push_back(tmpPos);
 					break;
 				};
@@ -129,6 +123,30 @@ OrganismPositon * Organism::getRandomNeighbourPosition(uint8_t range, bool mustB
 			}
 			else
 				tmpPos.x++;
+		}else if(neighbourPlaceSearchMode == emptyOrWithWeakOrganism)
+		{
+			if (world->peekOrganism(tmpPos) == nullptr)
+				whereCanMove.push_back(tmpPos);
+			else if (strength >= world->peekOrganism(tmpPos)->strength && !(tmpPos == position))
+				whereCanMove.push_back(tmpPos);
+			if (tmpPos.x >= rect.right)
+			{
+				if (tmpPos.y >= rect.bottom)
+				{
+					if (world->peekOrganism(tmpPos) == nullptr)
+						whereCanMove.push_back(tmpPos);
+					else if (strength >= world->peekOrganism(tmpPos)->strength && !(tmpPos == position))
+						whereCanMove.push_back(tmpPos);
+					break;
+				}
+				tmpPos.y++;
+				tmpPos.x = rect.left;
+			}
+			else
+				tmpPos.x++;
+
+
+
 		}
 	}
 	int randomLimit = whereCanMove.size();
@@ -193,6 +211,11 @@ OrganismPositon * Organism::getRandomNeighbourPosition(uint8_t range, bool mustB
 	}*/
 }
 
+short Organism::getStrength()const
+{
+	return strength;
+}
+
 uint8_t Organism::getOrganismXPos() const
 {
 	return position.x;
@@ -223,9 +246,9 @@ std::string Organism::getName()const
 	return name;
 }
 
-bool Organism::resistsAttack(const Organism* otherOrganism)
+Organism::ResistType Organism::resistsAttack(const Organism* otherOrganism)
 {
-	if (this->strength > otherOrganism->strength) return true;
-	return false;
+	if (this->strength > otherOrganism->strength) return kill;
+	return surrender;
 }
 
