@@ -5,8 +5,9 @@
 class World;
 struct OrganismPositon
 {
-	uint8_t x, y;
+	short x, y;
 	operator std::string() const;
+	bool operator==(const OrganismPositon& other)const;
 };
 enum OrganismType{antelope,cyberSheep, dandelion, deadlyNightshade, fox, grass, guarana, heracleumSosnowskyi, human, sheep, turtle, wolf};
 class Organism
@@ -21,6 +22,7 @@ public:
 	virtual void act()=0;
 	virtual void handleCollision(Organism*)=0;
 	virtual operator char();
+	virtual std::string toString() const;
 	//virtual void draw()=0;
 	OrganismPositon getOrganismPosition() const;
 	OrganismPositon * getRandomNeighbourPosition(uint8_t range = 1, bool mustBeEmpty = false) const;

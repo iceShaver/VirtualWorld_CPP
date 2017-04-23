@@ -11,7 +11,8 @@ Grass::~Grass()
 {
 }
 
-void Grass::handleCollision(Organism*)
+void Grass::handleCollision(Organism*otherOrganism)
 {
+	Plant::handleCollision(otherOrganism);
 }
 

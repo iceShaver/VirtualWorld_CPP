@@ -11,7 +11,8 @@ CyberSheep::~CyberSheep()
 {
 }
 
-void CyberSheep::handleCollision(Organism*)
+void CyberSheep::handleCollision(Organism*otherOrganism)
 {
+	Animal::handleCollision(otherOrganism);
 }
 

@@ -11,7 +11,8 @@ HeracleumSosnowskyi::~HeracleumSosnowskyi()
 {
 }
 
-void HeracleumSosnowskyi::handleCollision(Organism*)
+void HeracleumSosnowskyi::handleCollision(Organism*otherOrganism)
 {
+	Plant::handleCollision(otherOrganism);
 }
 

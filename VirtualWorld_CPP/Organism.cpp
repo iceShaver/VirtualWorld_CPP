@@ -1,12 +1,18 @@
 #include "Organism.h"
 #include "World.h"
 #include "Program.h"
-
+#include <sstream>
 OrganismPositon::operator basic_string<char>() const
 {
 	stringstream ss;
 	ss << "(" << (int)x << "," << (int)y << ")";
 	return ss.str();
+}
+
+bool OrganismPositon::operator==(const OrganismPositon& other) const
+{
+	if (x == other.x && y == other.y)return true;
+	return false;
 }
 
 bool Organism::Comparator::operator()(const Organism* left, const Organism* right) const
@@ -30,6 +36,13 @@ Organism::~Organism()
 Organism::operator char()
 {
 	return symbol;
+}
+
+std::string Organism::toString()const
+{
+	stringstream ss;
+	ss << name << " (" << (int)position.x << "," << (int)position.y << ")";
+	return ss.str();
 }
 
 OrganismPositon Organism::getOrganismPosition() const

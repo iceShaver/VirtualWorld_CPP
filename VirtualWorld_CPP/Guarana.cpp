@@ -11,7 +11,8 @@ Guarana::~Guarana()
 {
 }
 
-void Guarana::handleCollision(Organism*)
+void Guarana::handleCollision(Organism*otherOrganism)
 {
+	Plant::handleCollision(otherOrganism);
 }
 

@@ -16,6 +16,8 @@
 #include "Wolf.h"
 #include "Config.h"
 #include <set>
+#include "Keyboard.h"
+//#include "Organism.h"
 
 World::World(string name, uint8_t x, uint8_t y, WindowPosition areaPos, WindowPosition reporterPos)
 	: name(name), reporter(new Reporter(this, reporterPos)), areaPos(areaPos), reporterPos(reporterPos), width(x), height(y), overallTime(0), currentSessionTime(0), totalFields(x*y)
@@ -23,8 +25,8 @@ World::World(string name, uint8_t x, uint8_t y, WindowPosition areaPos, WindowPo
 	organismsArea = new Organism*[totalFields];
 	for (int i = 0; i < totalFields; ++i)
 		organismsArea[i] = nullptr;
-
-	pushOrganism(new Human(this, getRandomEmptyOrganismPosition()));
+	human = new Human(this, getRandomEmptyOrganismPosition());
+	pushOrganism(human);
 
 	//Push at least one organism of each type
 	for (int i = 0; i < 3; ++i)
@@ -134,7 +136,7 @@ void World::drawArea()
 	}
 	if (cfg::DEBUG) {
 		//Console::setCursorPos(Console::getWidth()-10, 4);
-		int x = Console::getWidth()-10;
+		int x = Console::getWidth() - 10;
 		/*for (int i = 0; i < totalFields; ++i)
 		{
 			if (organismsArea[i]) {
@@ -183,10 +185,62 @@ void World::moveOrganism(const OrganismPositon& src, const OrganismPositon& dest
 	}
 }
 
-void World::newMessage(string message, const Organism* organism) const
+void World::newMessage(string message, const Organism* organism, const Organism*otherOrganism) const
 {
-	reporter->newMessage(message, organism);
+	reporter->newMessage(message, organism, otherOrganism);
 }
+
+bool World::checkIfPlaceIsValidAndEmpty(short x, short y) const
+{
+	if (x < 0 || y < 0 || x >= areaPos.width-1 || y >= areaPos.height-1) return false;
+	if (peekOrganism({ x, y })) return false;
+	return true;
+}
+
+bool World::checkIfPlaceIsValid(short x, short y) const
+{
+	if (x < 0 || y < 0 || x >= areaPos.width-1 || y >= areaPos.height-1) return false;
+	return true;
+}
+
+void World::handleRoundInput()
+{
+	bool flag = true;
+	while (flag)
+	{
+		//if (Keyboard::getKey() == KEY_ENTER) break;
+		switch (Keyboard::getKey())
+		{
+			//case EXTENDED_CODE: break;
+		case KEY_UP: human->setMovementDirection(Human::up); break;
+		case KEY_DOWN: human->setMovementDirection(Human::down); break;
+		case KEY_LEFT: human->setMovementDirection(Human::left); break;
+		case KEY_RIGHT: human->setMovementDirection(Human::right); break;
+		case KEY_ENTER: flag = false; break;
+		case KEY_HOME: human->setMovementDirection(Human::upLeft); break;
+		case KEY_END: human->setMovementDirection(Human::downLeft); break;
+		case KEY_PG_UP: human->setMovementDirection(Human::upRight); break;
+		case KEY_PG_DOWN: human->setMovementDirection(Human::downRight); break;
+		case KEY_DELETE: human->setMovementDirection(Human::undefined); break;
+		case KEY_ESC: Program::close();	break;
+		default:;
+		}
+		Program::drawGameInterface();
+	}
+	//while (Keyboard::getKey() != KEY_ENTER);
+
+}
+
+void World::setHumanMoveDirection(Human::MovementDirection movementDirection)
+{
+
+}
+
+Human::MovementDirection World::getHumanMoveDirection()
+{
+	return human->getMovementDirection();
+}
+
 
 void World::deleteOrganism(OrganismPositon organismPositon)
 {
@@ -204,7 +258,7 @@ void World::deleteOrganism(Organism*organism)
 	std::multiset<Organism*, Organism::Comparator>::iterator delElem = priorityQueue.find(organism);
 	priorityQueue.erase(delElem);
 	size_t index = (*delElem)->getOrganismYPos()*width + (*delElem)->getOrganismXPos();
-	if(organismsArea[index])
+	if (organismsArea[index])
 	{
 		delete organismsArea[index];
 		organismsArea[index] = nullptr;
@@ -214,7 +268,7 @@ void World::deleteOrganism(Organism*organism)
 
 Organism* World::peekOrganism(OrganismPositon organismPositon) const
 {
-	return organismsArea[organismPositon.y*width+organismPositon.x];
+	return organismsArea[organismPositon.y*width + organismPositon.x];
 }
 
 OrganismPositon World::getRandomOrganismPosition() const

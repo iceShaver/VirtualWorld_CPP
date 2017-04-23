@@ -11,7 +11,8 @@ DeadlyNightshade::~DeadlyNightshade()
 {
 }
 
-void DeadlyNightshade::handleCollision(Organism*)
+void DeadlyNightshade::handleCollision(Organism*otherOrganism)
 {
+	Plant::handleCollision(otherOrganism);
 }
 

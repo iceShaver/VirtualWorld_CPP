@@ -11,6 +11,7 @@ Turtle::~Turtle()
 {
 }
 
-void Turtle::handleCollision(Organism*)
+void Turtle::handleCollision(Organism*otherOrganism)
 {
+	Animal::handleCollision(otherOrganism);
 }

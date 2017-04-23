@@ -11,7 +11,8 @@ Dandelion::~Dandelion()
 {
 }
 
-void Dandelion::handleCollision(Organism*)
+void Dandelion::handleCollision(Organism*otherOrganism)
 {
+	Plant::handleCollision(otherOrganism);
 }
 

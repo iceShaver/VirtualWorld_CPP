@@ -11,7 +11,8 @@ Fox::~Fox()
 {
 }
 
-void Fox::handleCollision(Organism*other)
+void Fox::handleCollision(Organism*otherOrganism)
 {
+	Animal::handleCollision(otherOrganism);
 }
 

@@ -39,7 +39,12 @@ public:
 	void deleteOrganism(Organism*);
 	Organism*peekOrganism(OrganismPositon) const;
 	void moveOrganism(const OrganismPositon& src, const OrganismPositon& dest);
-	void newMessage(string message,const Organism*organism = nullptr) const;
+	void newMessage(string message,const Organism*organism = nullptr, const Organism*otherOrganism =nullptr) const;
+	bool checkIfPlaceIsValidAndEmpty(short x, short y) const;
+	bool checkIfPlaceIsValid(short x, short y) const;
+	void handleRoundInput();
+	void setHumanMoveDirection(Human::MovementDirection movementDirection);
+	Human::MovementDirection getHumanMoveDirection();
 private:
 	OrganismPositon  getRandomOrganismPosition() const;
 	OrganismPositon getRandomEmptyOrganismPosition()const;
@@ -50,6 +55,7 @@ private:
 	Reporter * reporter;
 	WindowPosition areaPos, reporterPos;
 	multiset<Organism*,Organism::Comparator> priorityQueue;
+	Human*human;
 	//double fulfillmentRatio;
 	friend Organism;
 };

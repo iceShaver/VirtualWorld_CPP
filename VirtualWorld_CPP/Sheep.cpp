@@ -11,7 +11,8 @@ Sheep::~Sheep()
 {
 }
 
-void Sheep::handleCollision(Organism*)
+void Sheep::handleCollision(Organism*otherOrganism)
 {
+	Animal::handleCollision(otherOrganism);
 }
 

@@ -7,6 +7,7 @@ public:
 	virtual void act() override;
 	Animal(World* world, unsigned short strength, unsigned short initiative, OrganismPositon organismPositon, const char symbol, std::string name);
 	~Animal();
+	void handleCollision(Organism *) override;
 protected:
 	void moveTo(OrganismPositon * position);
 private:

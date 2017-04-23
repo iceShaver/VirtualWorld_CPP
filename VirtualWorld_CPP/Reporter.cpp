@@ -1,15 +1,16 @@
 #include "Reporter.h"
 #include <iostream>
-
 Reporter::Reporter(World* world, WindowPosition winPos)
 	:world(world), winPos(winPos)
 {
 }
 
-void Reporter::newMessage(std::string message, const Organism* organism)
+void Reporter::newMessage(std::string message, const Organism* organism, const Organism*otherOrganism)
 {
 	if (organism)
-		message = organism->getName() + " " + (string)organism->getOrganismPosition() + ": "+message;
+		message = organism->toString() + ": "+message;
+	if (otherOrganism)
+		message += otherOrganism->toString();
 	messages.push_front(message);
 }
 

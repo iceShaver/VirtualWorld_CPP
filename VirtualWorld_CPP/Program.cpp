@@ -107,8 +107,7 @@ void Program::playTheGame()
 	world->playRound();
 	drawGameInterface();
 	//fflush(stdin);
-	while (Keyboard::getKey() != KEY_ENTER);
-
+	world->handleRoundInput();
 }
 
 bool Program::getProbability(double probability)
@@ -162,7 +161,9 @@ void Program::drawInstruction(WindowPosition windowPosition)
 	newLine(x+=3);
 	cout << "[ENTER] - wykonaj ture";
 	newLine(x);
-	cout << "[STRZALKI] - wykonaj ruch czlowiekiem (gdy jego kolej)";
+	cout << "[STRZALKI] - okresl kierunek ruchu czlowieka";
+	newLine(x);
+	cout << "Obecny kierunek ruchu czlowieka: " << world->getHumanMoveDirection();
 
 
 }

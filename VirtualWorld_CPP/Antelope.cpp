@@ -12,9 +12,9 @@ Antelope::~Antelope()
 {
 }
 
-void Antelope::handleCollision(Organism* organism)
+void Antelope::handleCollision(Organism* otherOrganism)
 {
-
+	Animal::handleCollision(otherOrganism);
 }
 
 void Antelope::act()
