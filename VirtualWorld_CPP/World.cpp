@@ -57,7 +57,7 @@ World::World(string name, uint8_t x, uint8_t y, WindowPosition areaPos, WindowPo
 
 	for (int i = 0; i < totalFields*cfg::ORGANISM_FULFILLMENT_RATIO*cfg::ORGANISM_FULFILLMENT_RATIO; ++i)
 	{
-		OrganismType organism = (OrganismType)Program::getRandomIntNumber(0, 11);
+		OrganismType organism = static_cast<OrganismType>(Program::getRandomIntNumber(0, 11));
 		switch (organism)
 		{
 		case antelope:
