@@ -46,12 +46,13 @@ public:
 	void handleRoundInput();
 	Human::MovementDirection getHumanMoveDirection();
 	void deleteOrganisms();
+	uint32_t getRoundNumber() const;
 private:
 	OrganismPositon  getRandomOrganismPosition() const;
 	OrganismPositon getRandomEmptyOrganismPosition()const;
 	string name;
 	uint16_t width, height,totalFields;
-	uint32_t overallTime, currentSessionTime;
+	uint32_t overallTime, currentSessionTime, roundCounter;
 	//Organism**organismsArea;
 	vector<vector<Organism*>> *organismsArea;
 	Reporter * reporter;
@@ -60,6 +61,7 @@ private:
 	multiset<Organism*, Organism::Comparator>::iterator newIterator;
 	vector<Organism*> organismsToRemoveFromMultiset;
 	Human*human;
+
 	//double fulfillmentRatio;
 	friend Organism;
 	friend Human;

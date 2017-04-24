@@ -6,6 +6,7 @@ class Wolf : public Animal
 public:
 	Wolf(World* world, OrganismPositon organismPositon);
 	~Wolf();
-	void handleCollision(Organism*) override;
+
+	void spawn(const OrganismPositon& organismPosition) override;
 };
 

@@ -6,6 +6,7 @@ class Guarana : public Plant
 public:
 	Guarana(World* world, OrganismPositon organismPositon);
 	~Guarana();
-	void handleCollision(Organism*) override;
+	ResistType resistsAttack(const Organism*otherOrganism)override;
+	void sow(const OrganismPositon& organismPosition) override;
 };
 

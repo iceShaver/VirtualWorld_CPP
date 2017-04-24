@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <string>
+#include <vector>
 //#include "World.h"
 class World;
 struct OrganismPositon
@@ -14,7 +15,7 @@ class Organism
 {
 public:
 	enum NeighbourPlaceSearchMode{all, onlyEmpty, emptyOrWithWeakOrganism};
-	enum ResistType{surrender ,moveToPreviousPlace, kill, escape };
+	enum ResistType{surrender ,moveToPreviousPlace, kill, escape, increaseStrength, moveAroundMe };
 	struct Comparator
 	{
 		bool operator()(const Organism* left, const Organism*right)const;
@@ -29,7 +30,8 @@ public:
 	bool operator==( const Organism&other)const;
 	//virtual void draw()=0;
 	OrganismPositon getOrganismPosition() const;
-	OrganismPositon * getRandomNeighbourPosition(uint8_t range = 1, NeighbourPlaceSearchMode neighbourPlaceSearchMode = all) const;
+	OrganismPositon * getRandomNeighbourPosition(uint8_t range = 1, NeighbourPlaceSearchMode neighbourPlaceSearchMode = all, const Organism*fixedOrganism = nullptr) const;
+	std::vector<OrganismPositon>getAllNeigbourPosition(uint8_t range = 1, NeighbourPlaceSearchMode neighbourPlaceSearchMode = all, const Organism*fixedOrganism = nullptr) const;
 	short getStrength()const;
 	uint8_t getOrganismXPos() const;
 	uint8_t getOrganismYPos() const;
@@ -38,6 +40,7 @@ public:
 	unsigned short getInitiative();
 	std::string getName()const;
 	virtual ResistType resistsAttack(const Organism* otherOrganism);
+	std::string getName();
 protected:
 	unsigned short strength;
 	OrganismPositon position;

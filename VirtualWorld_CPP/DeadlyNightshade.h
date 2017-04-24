@@ -6,6 +6,7 @@ class DeadlyNightshade : public Plant
 public:
 	DeadlyNightshade(World* world, OrganismPositon organismPositon);
 	~DeadlyNightshade();
-	void handleCollision(Organism*) override;
+	ResistType resistsAttack(const Organism*otherOrganism)override;
+	void sow(const OrganismPositon& organismPosition) override;
 };
 

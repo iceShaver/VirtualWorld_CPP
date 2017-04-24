@@ -138,17 +138,17 @@ void Program::drawInstruction(WindowPosition windowPosition)
 	newLine(x);
 	cout << "C - cyber-owca";
 	newLine(x);
-	cout << "M - mlecz";
+	cout << "m - mlecz";
 	newLine(x);
-	cout << "J - wilcza jagoda";
+	cout << "j - wilcza jagoda";
 	newLine(x);
 	cout << "L - lis";
 	newLine(x);
-	cout << "T - trawa";
+	cout << "t - trawa";
 	newLine(x);
-	cout << "G - guarana";
+	cout << "g - guarana";
 	newLine(x);
-	cout << "B - barszcz sosnowskiego";
+	cout << "b - barszcz sosnowskiego";
 	newLine(x);
 	cout << "H - czlowiek";
 	newLine(x);
@@ -164,9 +164,13 @@ void Program::drawInstruction(WindowPosition windowPosition)
 	cout << "[ENTER] - wykonaj ture";
 	newLine(x);
 	cout << "[STRZALKI] - okresl kierunek ruchu czlowieka";
+	newLine(x);
+	cout << "[SPACE] - aktywuj tarcze alzura";
 	if (world->human) {
 		newLine(x);
 		cout << "Obecny kierunek ruchu czlowieka: " << world->getHumanMoveDirection();
+		if (world->human->isAlzursShieldActivated())
+			cout << " tarcza alzura aktywna";
 	}
 
 

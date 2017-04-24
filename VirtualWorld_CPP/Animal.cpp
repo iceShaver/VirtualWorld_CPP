@@ -1,7 +1,7 @@
 #include "Animal.h"
 #include "World.h"
 #include <iostream>
-
+#include "Config.h"
 /**
  * \brief Looks for place around and moves to it;
  *  not found->no action;
@@ -31,6 +31,18 @@ void Animal::handleCollision(Organism* otherOrganism)
 {
 	OrganismPositon* newOrganismPositon = new OrganismPositon{otherOrganism->getOrganismXPos(), otherOrganism->getOrganismYPos()};
 	world->newMessage("* ", this, otherOrganism);
+	if(getName()==otherOrganism->getName())
+	{
+		
+		//TODO: random pos for new animal
+		OrganismPositon*tmp = getRandomNeighbourPosition(1, onlyEmpty);
+		if (!tmp)return; //abort
+		OrganismPositon organismPositon{tmp->x, tmp->y};
+		delete tmp;
+		world->newMessage("nowe zwierze", this);
+		spawn(organismPositon);
+		return;
+	}
 	ResistType result = otherOrganism->resistsAttack(this);
 	if(result == kill)
 	{
@@ -48,6 +60,23 @@ void Animal::handleCollision(Organism* otherOrganism)
 	{
 		world->newMessage("wyploszyl ", this, otherOrganism);
 		moveTo(newOrganismPositon);
+	}else if(result == increaseStrength)
+	{
+		strength += cfg::GUARANA_STRENGTH_INCREASE_VALUE;
+		stringstream message;
+		message << "sila rosnie do " << strength << " ";
+		world->newMessage("> ", this, otherOrganism);
+		world->deleteOrganism(otherOrganism);
+		world->newMessage(message.str(), this);
+		moveTo(newOrganismPositon);
+	}else if(result==moveAroundMe)
+	{
+		OrganismPositon * newOrganismPos = getRandomNeighbourPosition(1, onlyEmpty, otherOrganism);
+		if(newOrganismPos)
+		{
+			moveTo(newOrganismPos);
+			delete newOrganismPos;
+		}
 	}
 	delete newOrganismPositon;
 }

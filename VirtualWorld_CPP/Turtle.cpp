@@ -12,10 +12,6 @@ Turtle::~Turtle()
 {
 }
 
-void Turtle::handleCollision(Organism*otherOrganism)
-{
-	Animal::handleCollision(otherOrganism);
-}
 
 void Turtle::act()
 {
@@ -35,4 +31,10 @@ Organism::ResistType Turtle::resistsAttack(const Organism* otherOrganism)
 {
 	if (otherOrganism->getStrength() < cfg::TURTLE_RESIST_MAX_STRENGTH) return moveToPreviousPlace;
 	return surrender;
+}
+
+void Turtle::spawn(const OrganismPositon& organismPosition)
+{
+	world->pushOrganism(new Turtle(world, organismPosition));
+
 }

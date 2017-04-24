@@ -6,6 +6,7 @@ class CyberSheep : public Animal
 public:
 	CyberSheep(World* world, OrganismPositon organismPositon);
 	~CyberSheep();
-	void handleCollision(Organism*) override;
+
+	void spawn(const OrganismPositon& organismPosition) override;
 };
 

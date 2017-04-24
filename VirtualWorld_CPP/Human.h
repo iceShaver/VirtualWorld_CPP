@@ -8,14 +8,18 @@ public:
 	//static const char MovementDirectionSymbols[9] = {'0', }
 	Human(World* world, OrganismPositon organismPositon);
 	~Human();
-	void handleCollision(Organism*) override;
 	void act()override;
 	MovementDirection getMovementDirection()const;
 	void setMovementDirection(MovementDirection movementDirection);
+	void spawn(const OrganismPositon& organismPosition) override;
+	void activateAlzursShield();
+	void handleAlzursShield();
+	ResistType resistsAttack(const Organism* otherOrganism) override;
+	bool isAlzursShieldActivated()const;
 private:
 	MovementDirection movementDirection;
-public:
-
+	bool alzursShieldActivated;
+	uint32_t alzursShieldActDeactRound;
 
 	
 };

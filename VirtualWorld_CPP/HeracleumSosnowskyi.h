@@ -6,6 +6,8 @@ class HeracleumSosnowskyi : public Plant
 public:
 	HeracleumSosnowskyi(World* world, OrganismPositon organismPositon);
 	~HeracleumSosnowskyi();
-	void handleCollision(Organism*) override;
+	void act()override;
+	ResistType resistsAttack(const Organism*otherOrganism)override;
+	void sow(const OrganismPositon& organismPosition) override;
 };
 

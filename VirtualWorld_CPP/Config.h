@@ -1,10 +1,11 @@
 #pragma once
 #include <string>
+#include "Animal.h"
 
 namespace cfg
 {
 
-	const bool DEBUG = true;
+	const bool DEBUG = false;
 
 	const std::string SAVE_DIR = ".";
 	const std::string SAVE_EXT = "bin";
@@ -69,4 +70,8 @@ namespace cfg
 	const double ORGANISM_FULFILLMENT_RATIO = 0.1;
 	const size_t INITIATIVES_NUMBER = 8;
 	const short TURTLE_RESIST_MAX_STRENGTH = 5;
+	const double PLANT_SOW_PROBABILITY = 0.001;
+	const int DANDELION_SOW_ATTEMPT_NUMBER = 3;
+	const unsigned short GUARANA_STRENGTH_INCREASE_VALUE = 3;
+	const short HUMAN_SPECIAL_SKILL_ROUND_INTERVAL = 5;
 }

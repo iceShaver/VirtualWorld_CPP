@@ -13,10 +13,6 @@ Antelope::~Antelope()
 {
 }
 
-void Antelope::handleCollision(Organism* otherOrganism)
-{
-	Animal::handleCollision(otherOrganism);
-}
 
 Organism::ResistType Antelope::resistsAttack(const Organism* otherOrganism)
 {
@@ -31,6 +27,11 @@ Organism::ResistType Antelope::resistsAttack(const Organism* otherOrganism)
 		
 	} 
 	return Animal::resistsAttack(otherOrganism);
+}
+
+void Antelope::spawn(const OrganismPositon& organismPosition)
+{
+	world->pushOrganism(new Antelope(world, organismPosition));
 }
 
 void Antelope::act()

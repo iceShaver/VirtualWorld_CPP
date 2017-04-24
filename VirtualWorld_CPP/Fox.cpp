@@ -11,10 +11,6 @@ Fox::~Fox()
 {
 }
 
-void Fox::handleCollision(Organism*otherOrganism)
-{
-	Animal::handleCollision(otherOrganism);
-}
 
 void Fox::act()
 {
@@ -26,5 +22,11 @@ void Fox::act()
 	else
 		moveTo(newOrganismPositon);
 	delete newOrganismPositon;
+}
+
+void Fox::spawn(const OrganismPositon& organismPosition)
+{
+	world->pushOrganism(new Fox(world, organismPosition));
+
 }
 

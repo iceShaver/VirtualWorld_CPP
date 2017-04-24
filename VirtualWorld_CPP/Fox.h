@@ -6,7 +6,8 @@ class Fox : public Animal
 public:
 	Fox(World* world, OrganismPositon organismPositon);
 	~Fox();
-	void handleCollision(Organism*) override;
 	void act()override;
+
+	void spawn(const OrganismPositon& organismPosition) override;
 };
 

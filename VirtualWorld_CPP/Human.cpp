@@ -3,7 +3,8 @@
 #include "World.h"
 
 Human::Human(World* world, OrganismPositon organismPositon)
-	:Animal(world, cfg::HUMAN_STRENGTH, cfg::HUMAN_INITIATIVE, organismPositon, cfg::HUMAN_SYMBOL, "Czlowiek"),movementDirection(undefined)
+	:Animal(world, cfg::HUMAN_STRENGTH, cfg::HUMAN_INITIATIVE, organismPositon, cfg::HUMAN_SYMBOL, "Czlowiek"),
+	movementDirection(undefined), alzursShieldActivated(false)
 {
 }
 
@@ -12,13 +13,11 @@ Human::~Human()
 	world->human = nullptr;
 }
 
-void Human::handleCollision(Organism*otherOrganism)
-{
-	Animal::handleCollision(otherOrganism);
-}
+
 
 void Human::act()
 {
+	handleAlzursShield();
 	//world->newMessage("Ruch czlowieka")
 	OrganismPositon newOrganismPositon = position;
 	switch (movementDirection)
@@ -37,10 +36,10 @@ void Human::act()
 		newOrganismPositon.x++;
 		newOrganismPositon.y--;
 		break;
-	case MovementDirection::left: 
+	case MovementDirection::left:
 		newOrganismPositon.x--;
 		break;
-	case MovementDirection::right: 
+	case MovementDirection::right:
 		newOrganismPositon.x++;
 		break;
 	case downLeft:
@@ -54,15 +53,16 @@ void Human::act()
 		newOrganismPositon.x++;
 		newOrganismPositon.y++;
 		break;
-	default: 
+	default:
 		break;
 	}
-	if(newOrganismPositon == position)
+	if (newOrganismPositon == position)
 		world->newMessage("pozostaje na miejscu", this);
-	else if(world->checkIfPlaceIsValidAndEmpty(newOrganismPositon.x, newOrganismPositon.y))
+	else if (world->checkIfPlaceIsValidAndEmpty(newOrganismPositon.x, newOrganismPositon.y))
 	{
 		moveTo(&newOrganismPositon);
-	}else if(world->checkIfPlaceIsValid(newOrganismPositon.x, newOrganismPositon.y))
+	}
+	else if (world->checkIfPlaceIsValid(newOrganismPositon.x, newOrganismPositon.y))
 	{
 		handleCollision(world->peekOrganism(newOrganismPositon));
 	}
@@ -78,5 +78,43 @@ Human::MovementDirection Human::getMovementDirection() const
 void Human::setMovementDirection(MovementDirection movementDirection)
 {
 	this->movementDirection = movementDirection;
+}
+
+
+void Human::spawn(const OrganismPositon& organismPosition)
+{
+}
+
+void Human::activateAlzursShield()
+{
+	if (alzursShieldActivated) return;
+	if ((world->getRoundNumber() - alzursShieldActDeactRound) < 5) return;
+	alzursShieldActivated = true;
+	alzursShieldActDeactRound = world->getRoundNumber();
+}
+
+void Human::handleAlzursShield()
+{
+	if(alzursShieldActivated)
+	{
+		if ((world->getRoundNumber() - alzursShieldActDeactRound) < 5) return;
+		alzursShieldActivated = false;
+		alzursShieldActDeactRound = world->getRoundNumber();
+	}
+}
+
+Organism::ResistType Human::resistsAttack(const Organism* otherOrganism)
+{
+	if (alzursShieldActivated)
+	{
+		world->newMessage("tarcza alzura dla ", this, otherOrganism);
+		return moveAroundMe;
+	}
+	return Organism::resistsAttack(otherOrganism);
+}
+
+bool Human::isAlzursShieldActivated() const
+{
+	return alzursShieldActivated;
 }
 

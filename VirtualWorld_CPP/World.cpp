@@ -21,7 +21,8 @@
 
 World::World(string name, uint8_t x, uint8_t y, WindowPosition areaPos, WindowPosition reporterPos)
 	: name(name), reporter(new Reporter(this, reporterPos)), areaPos(areaPos), reporterPos(reporterPos),
-	width(x), height(y), overallTime(0), currentSessionTime(0), totalFields(x*y), newIterator(priorityQueue.end())
+	width(x), height(y), overallTime(0), currentSessionTime(0), totalFields(x*y), newIterator(priorityQueue.end()),
+	roundCounter(0)
 {
 	//organismsArea = new Organism*[totalFields];
 	//for (int i = 0; i < totalFields; ++i)
@@ -56,50 +57,50 @@ World::World(string name, uint8_t x, uint8_t y, WindowPosition areaPos, WindowPo
 
 	//Push additional organisms randomly
 
-	//for (int i = 0; i < totalFields*cfg::ORGANISM_FULFILLMENT_RATIO*cfg::ORGANISM_FULFILLMENT_RATIO; ++i)
-	//{
-	//	OrganismType organism = (OrganismType)Program::getRandomIntNumber(0, 11);
-	//	switch (organism)
-	//	{
-	//	case antelope:
-	//		pushOrganism(new Antelope(this, getRandomEmptyOrganismPosition()));
-	//		break;
-	//	case cyberSheep:
-	//		pushOrganism(new CyberSheep(this, getRandomEmptyOrganismPosition()));
-	//		break;
-	//	case dandelion:
-	//		pushOrganism(new Dandelion(this, getRandomEmptyOrganismPosition()));
-	//		break;
-	//	case deadlyNightshade:
-	//		pushOrganism(new DeadlyNightshade(this, getRandomEmptyOrganismPosition()));
-	//		break;
-	//	case fox:
-	//		pushOrganism(new Fox(this, getRandomEmptyOrganismPosition()));
-	//		break;
-	//	case grass:
-	//		pushOrganism(new Grass(this, getRandomEmptyOrganismPosition()));
-	//		break;
-	//	case guarana:
-	//		pushOrganism(new Guarana(this, getRandomEmptyOrganismPosition()));
-	//		break;
-	//	case heracleumSosnowskyi:
-	//		pushOrganism(new HeracleumSosnowskyi(this, getRandomEmptyOrganismPosition()));
-	//		break;
-	//	case human:
-	//		//pushOrganism(new Human(this, getRandomEmptyOrganismPosition()));
-	//		break;
-	//	case sheep:
-	//		pushOrganism(new Sheep(this, getRandomEmptyOrganismPosition()));
-	//		break;
-	//	case turtle:
-	//		pushOrganism(new Turtle(this, getRandomEmptyOrganismPosition()));
-	//		break;
-	//	case wolf:
-	//		pushOrganism(new Wolf(this, getRandomEmptyOrganismPosition()));
-	//		break;
-	//	default:;
-	//	}
-	//}
+	for (int i = 0; i < totalFields*cfg::ORGANISM_FULFILLMENT_RATIO*cfg::ORGANISM_FULFILLMENT_RATIO; ++i)
+	{
+		OrganismType organism = (OrganismType)Program::getRandomIntNumber(0, 11);
+		switch (organism)
+		{
+		case antelope:
+			pushOrganism(new Antelope(this, getRandomEmptyOrganismPosition()));
+			break;
+		case cyberSheep:
+			pushOrganism(new CyberSheep(this, getRandomEmptyOrganismPosition()));
+			break;
+		case dandelion:
+			pushOrganism(new Dandelion(this, getRandomEmptyOrganismPosition()));
+			break;
+		case deadlyNightshade:
+			pushOrganism(new DeadlyNightshade(this, getRandomEmptyOrganismPosition()));
+			break;
+		case fox:
+			pushOrganism(new Fox(this, getRandomEmptyOrganismPosition()));
+			break;
+		case grass:
+			pushOrganism(new Grass(this, getRandomEmptyOrganismPosition()));
+			break;
+		case guarana:
+			pushOrganism(new Guarana(this, getRandomEmptyOrganismPosition()));
+			break;
+		case heracleumSosnowskyi:
+			pushOrganism(new HeracleumSosnowskyi(this, getRandomEmptyOrganismPosition()));
+			break;
+		case OrganismType::human:
+			//pushOrganism(new Human(this, getRandomEmptyOrganismPosition()));
+			break;
+		case sheep:
+			pushOrganism(new Sheep(this, getRandomEmptyOrganismPosition()));
+			break;
+		case turtle:
+			pushOrganism(new Turtle(this, getRandomEmptyOrganismPosition()));
+			break;
+		case wolf:
+			pushOrganism(new Wolf(this, getRandomEmptyOrganismPosition()));
+			break;
+		default:;
+		}
+	}
 
 
 }
@@ -111,6 +112,7 @@ World::~World()
 
 void World::playRound()
 {
+	roundCounter++;
 	vector<Organism*> organismsToDelete;
 	for (auto organism : priorityQueue)
 		organism->increaseAge();
@@ -233,22 +235,31 @@ void World::handleRoundInput()
 	while (flag)
 	{
 		//if (Keyboard::getKey() == KEY_ENTER) break;
-		switch (Keyboard::getKey())
-		{
-			//case EXTENDED_CODE: break;
-		case KEY_UP: human->setMovementDirection(Human::up); break;
-		case KEY_DOWN: human->setMovementDirection(Human::down); break;
-		case KEY_LEFT: human->setMovementDirection(Human::left); break;
-		case KEY_RIGHT: human->setMovementDirection(Human::right); break;
-		case KEY_ENTER: flag = false; break;
-		case KEY_HOME: human->setMovementDirection(Human::upLeft); break;
-		case KEY_END: human->setMovementDirection(Human::downLeft); break;
-		case KEY_PG_UP: human->setMovementDirection(Human::upRight); break;
-		case KEY_PG_DOWN: human->setMovementDirection(Human::downRight); break;
-		case KEY_DELETE: human->setMovementDirection(Human::undefined); break;
-		case KEY_ESC: Program::close();	break;
-		default:;
-		}
+		if (human)
+			switch (Keyboard::getKey())
+			{
+				//case EXTENDED_CODE: break;
+			case KEY_UP: human->setMovementDirection(Human::up); break;
+			case KEY_DOWN: human->setMovementDirection(Human::down); break;
+			case KEY_LEFT: human->setMovementDirection(Human::left); break;
+			case KEY_RIGHT: human->setMovementDirection(Human::right); break;
+			case KEY_ENTER: flag = false; break;
+			case KEY_HOME: human->setMovementDirection(Human::upLeft); break;
+			case KEY_END: human->setMovementDirection(Human::downLeft); break;
+			case KEY_PG_UP: human->setMovementDirection(Human::upRight); break;
+			case KEY_PG_DOWN: human->setMovementDirection(Human::downRight); break;
+			case KEY_DELETE: human->setMovementDirection(Human::undefined); break;
+			case KEY_SPACE: human->activateAlzursShield(); break;
+			case KEY_ESC: Program::close();	break;
+			default:;
+			}
+		else
+			switch (Keyboard::getKey())
+			{
+			case KEY_ENTER: flag = false; break;
+			case KEY_ESC: Program::close();	break;
+			default:;
+			}
 		Program::drawGameInterface();
 	}
 	//while (Keyboard::getKey() != KEY_ENTER);
@@ -267,14 +278,15 @@ Human::MovementDirection World::getHumanMoveDirection()
 
 void World::deleteOrganism(OrganismPositon organismPositon)
 {
-	int index = organismPositon.y*width + organismPositon.x;
+	//int index = organismPositon.y*width + organismPositon.x;
 	if ((*organismsArea)[organismPositon.x][organismPositon.y]) {
-		std::multiset<Organism*, Organism::Comparator>::iterator delElem = priorityQueue.find((*organismsArea)[organismPositon.x][organismPositon.y]);
+		std::multiset<Organism*, Organism::Comparator>::iterator delElem = std::find(priorityQueue.begin(), priorityQueue.end(), peekOrganism(organismPositon));
 		newIterator = priorityQueue.erase(delElem);
 		//organismsToRemoveFromMultiset.push_back(organismsArea[index]);
 		delete (*organismsArea)[organismPositon.x][organismPositon.y];
 		(*organismsArea)[organismPositon.x][organismPositon.y] = nullptr;
 	}
+
 }
 
 void World::deleteOrganism(Organism*organism)
@@ -339,4 +351,9 @@ void World::deleteOrganisms()
 		delete organism;
 		priorityQueue.erase(delElem);
 	}
+}
+
+uint32_t World::getRoundNumber() const
+{
+	return roundCounter;
 }
