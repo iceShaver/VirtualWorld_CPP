@@ -12,7 +12,7 @@ public:
 	};
 	Menu();
 	~Menu();
-	void performSelectedAction();
+	void performSelectedAction() const;
 	void handle();
 private:
 	void draw() const;

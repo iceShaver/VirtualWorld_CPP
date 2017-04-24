@@ -4,7 +4,8 @@
 #include "Program.h"
 
 Antelope::Antelope(World* world, OrganismPositon organismPositon)
-	:Animal(world, cfg::ANTELOPE_STRENGTH, cfg::ANTELOPE_INITIATIVE, organismPositon, cfg::ANTELOPE_SYMBOL, "Antylopa")
+	:Animal(world, cfg::ANTELOPE_STRENGTH, cfg::ANTELOPE_INITIATIVE,
+		organismPositon, cfg::ANTELOPE_SYMBOL, "Antylopa")
 {
 
 }

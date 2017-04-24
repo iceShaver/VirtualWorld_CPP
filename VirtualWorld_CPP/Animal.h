@@ -4,13 +4,13 @@
 class Animal : public Organism
 {
 public:
-	virtual void act() override;
-	Animal(World* world, unsigned short strength, unsigned short initiative, OrganismPositon organismPositon, const char symbol, std::string name);
+	Animal(World* world, unsigned short strength, unsigned short initiative,
+		OrganismPositon organismPositon, const char symbol, std::string name);
 	~Animal();
-	virtual void spawn(const OrganismPositon&organismPosition)=0;
+	void act() override;
 	void handleCollision(Organism *) override;
+	virtual void spawn(const OrganismPositon&organismPosition) = 0;
 protected:
 	void moveTo(OrganismPositon * position);
-private:
 };
 

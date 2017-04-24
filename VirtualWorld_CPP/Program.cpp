@@ -63,6 +63,7 @@ void Program::loadGame()
 
 void Program::saveGame()
 {
+
 }
 
 void Program::handleEvent()
@@ -95,7 +96,6 @@ void Program::drawGameInterface()
 	Console::clear();
 	Console::drawWindow(WindowComposition::left, world->getWidth(), world->getHeight());
 	Console::drawWindow(WindowComposition::bottom_right);
-	//TODO: draw results of game, reporter and info
 	drawInstruction(Console::drawWindow(WindowComposition::top_right));
 	world->drawArea();
 	world->drawReporter();
@@ -112,7 +112,7 @@ void Program::playTheGame()
 
 bool Program::getProbability(double probability)
 {
-	double random = ((double)rand() / (RAND_MAX));
+	double random = (static_cast<double>(rand()) / (RAND_MAX));
 	if (random <= probability) return true;
 	return false;
 }

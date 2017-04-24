@@ -8,7 +8,8 @@ class Reporter
 {
 public:
 	explicit Reporter(World * world, WindowPosition winPos);
-	void newMessage(std::string message, const Organism*organism = nullptr, const Organism*otherOrganism = nullptr);
+	void newMessage(std::string message, const Organism*organism = nullptr,
+		const Organism*otherOrganism = nullptr);
 	void printMessages();
 private:
 	std::list<std::string> messages;

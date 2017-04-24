@@ -14,7 +14,7 @@ HeracleumSosnowskyi::~HeracleumSosnowskyi()
 
 void HeracleumSosnowskyi::act()
 {
-	//TODO: Exception for cyber-sheep and Plants
+	//TODO:DONE Exception for cyber-sheep and Plants
 	Plant::act();
 	vector<OrganismPositon> organismPositons = getAllNeigbourPosition();
 	for (OrganismPositon organismPositon : organismPositons)

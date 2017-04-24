@@ -30,7 +30,7 @@ Menu::~Menu()
 	delete positions;
 }
 
-void Menu::performSelectedAction()
+void Menu::performSelectedAction() const
 {
 	switch (choice)
 	{
@@ -51,17 +51,14 @@ void Menu::performSelectedAction()
 
 void Menu::handle()
 {
-	//Console::clear();
 	short menuPosition = choice;
 		draw();
 		switch(Keyboard::getKey())
 		{
 		case KEY_UP:
-			//cout << "UP";
 			menuPosition--;
 			break;
 		case KEY_DOWN:
-			//cout << "DOWN";
 			menuPosition++;
 			break;
 		case KEY_ENTER:
@@ -79,7 +76,6 @@ void Menu::handle()
 			menuPosition = (short)(mod < 0 ? positions->size() + mod : mod);
 			choice = (Function)menuPosition;
 		}
-		//while (_kbhit()) _getch();
 
 }
 

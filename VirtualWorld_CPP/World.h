@@ -27,25 +27,28 @@ class Reporter;
 class World
 {
 public:
-	explicit World(string name, uint8_t x, uint8_t y, WindowPosition areaPos, WindowPosition reporterPos);
+	explicit World(string name, uint8_t x, uint8_t y, WindowPosition areaPos,
+		WindowPosition reporterPos);
+
 	~World();
 	void playRound();
-	uint8_t getWidth();
-	uint8_t getHeight();
+	uint8_t getWidth() const;
+	uint8_t getHeight() const;
 	void drawArea();
-	void drawReporter();
+	void drawReporter() const;
 	void pushOrganism(Organism*);
-	Organism* pullOrganism(OrganismPositon);
 	void deleteOrganism(OrganismPositon);
 	void deleteOrganism(Organism*);
+	Organism* pullOrganism(OrganismPositon);
 	Organism*peekOrganism(OrganismPositon) const;
 	void moveOrganism(const OrganismPositon& src, const OrganismPositon& dest);
-	void newMessage(string message,const Organism*organism = nullptr, const Organism*otherOrganism =nullptr) const;
+	void newMessage(string message,const Organism*organism = nullptr,
+		const Organism*otherOrganism =nullptr) const;
+
 	bool checkIfPlaceIsValidAndEmpty(short x, short y) const;
 	bool checkIfPlaceIsValid(short x, short y) const;
-	void handleRoundInput();
-	Human::MovementDirection getHumanMoveDirection();
-	void deleteOrganisms();
+	void handleRoundInput() const;
+	Human::MovementDirection getHumanMoveDirection() const;
 	uint32_t getRoundNumber() const;
 private:
 	OrganismPositon  getRandomOrganismPosition() const;
@@ -53,16 +56,12 @@ private:
 	string name;
 	uint16_t width, height,totalFields;
 	uint32_t overallTime, currentSessionTime, roundCounter;
-	//Organism**organismsArea;
 	vector<vector<Organism*>> *organismsArea;
 	Reporter * reporter;
 	WindowPosition areaPos, reporterPos;
 	multiset<Organism*,Organism::Comparator> priorityQueue;
 	multiset<Organism*, Organism::Comparator>::iterator newIterator;
-	vector<Organism*> organismsToRemoveFromMultiset;
 	Human*human;
-
-	//double fulfillmentRatio;
 	friend Organism;
 	friend Human;
 	friend Program;

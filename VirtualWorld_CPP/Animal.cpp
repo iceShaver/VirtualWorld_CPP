@@ -19,7 +19,8 @@ void Animal::act()
 	delete newOrganismPositon;
 }
 
-Animal::Animal(World* world, unsigned short strength, unsigned short initiative, OrganismPositon organismPositon, const char symbol, string name)
+Animal::Animal(World* world, unsigned short strength, unsigned short initiative,
+	OrganismPositon organismPositon, const char symbol, string name)
 	:Organism(world, strength, initiative, organismPositon, symbol, name)
 {}
 
@@ -29,12 +30,13 @@ Animal::~Animal()
 
 void Animal::handleCollision(Organism* otherOrganism)
 {
-	OrganismPositon* newOrganismPositon = new OrganismPositon{otherOrganism->getOrganismXPos(), otherOrganism->getOrganismYPos()};
+	OrganismPositon* newOrganismPositon = 
+		new OrganismPositon{otherOrganism->getOrganismXPos(), otherOrganism->getOrganismYPos()};
 	world->newMessage("* ", this, otherOrganism);
 	if(getName()==otherOrganism->getName())
 	{
 		
-		//TODO: random pos for new animal
+		//TODO:DONE random pos for new animal
 		OrganismPositon*tmp = getRandomNeighbourPosition(1, onlyEmpty);
 		if (!tmp)return; //abort
 		OrganismPositon organismPositon{tmp->x, tmp->y};
@@ -71,7 +73,8 @@ void Animal::handleCollision(Organism* otherOrganism)
 		moveTo(newOrganismPositon);
 	}else if(result==moveAroundMe)
 	{
-		OrganismPositon * newOrganismPos = getRandomNeighbourPosition(1, onlyEmpty, otherOrganism);
+		OrganismPositon * newOrganismPos = 
+			getRandomNeighbourPosition(1, onlyEmpty, otherOrganism);
 		if(newOrganismPos)
 		{
 			moveTo(newOrganismPos);

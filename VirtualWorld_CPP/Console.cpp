@@ -271,51 +271,28 @@ void Console::bufferCopy(const HANDLE& src, HANDLE& dest, size_t width, size_t h
 
 void Console::cls(HANDLE handle)
 {
-	COORD coordScreen = { 0, 0 };    // home for the cursor 
+	COORD coordScreen = { 0, 0 };
 	DWORD cCharsWritten;
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	DWORD dwConSize;
-
-	// Get the number of character cells in the current buffer. 
-
 	if (!GetConsoleScreenBufferInfo(handle, &csbi))
-	{
 		return;
-	}
-
 	dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
-
-	// Fill the entire screen with blanks.
-
-	if (!FillConsoleOutputCharacter(handle,        // Handle to console screen buffer 
-		(TCHAR) ' ',     // Character to write to the buffer
-		dwConSize,       // Number of cells to write 
-		coordScreen,     // Coordinates of first cell 
-		&cCharsWritten))// Receive number of characters written
-	{
+	if (!FillConsoleOutputCharacter(
+		handle,
+		(TCHAR) ' ',
+		dwConSize,
+		coordScreen,
+		&cCharsWritten))
 		return;
-	}
-
-	// Get the current text attribute.
-
 	if (!GetConsoleScreenBufferInfo(handle, &csbi))
-	{
 		return;
-	}
-
-	// Set the buffer's attributes accordingly.
-
-	if (!FillConsoleOutputAttribute(handle,         // Handle to console screen buffer 
-		csbi.wAttributes, // Character attributes to use
-		dwConSize,        // Number of cells to set attribute 
-		coordScreen,      // Coordinates of first cell 
-		&cCharsWritten)) // Receive number of characters written
-	{
+	if (!FillConsoleOutputAttribute(handle,
+		csbi.wAttributes,
+		dwConSize,
+		coordScreen,
+		&cCharsWritten)) 
 		return;
-	}
-
-	// Put the cursor at its home coordinates.
-
 	SetConsoleCursorPosition(handle, coordScreen);
 }
 
@@ -323,7 +300,12 @@ void Console::init()
 {
 	std::cout.sync_with_stdio(false);
 	consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-	bufferHandle = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
+	bufferHandle = CreateConsoleScreenBuffer(
+		GENERIC_READ | GENERIC_WRITE,
+		FILE_SHARE_READ | FILE_SHARE_WRITE,
+		NULL, CONSOLE_TEXTMODE_BUFFER,
+		NULL);
+
 	CONSOLE_CURSOR_INFO cursorInfo;
 	COORD coord = { width, height };
 	GetConsoleCursorInfo(consoleHandle, &cursorInfo);
@@ -335,7 +317,7 @@ void Console::init()
 	SetConsoleDisplayMode(bufferHandle, CONSOLE_FULLSCREEN_MODE, &coord);
 	SetConsoleCursorInfo(bufferHandle, &cursorInfo);
 	setTextAttributes(15);
-	//TODO: Fix console double buffering
+	//TODO:PARTLY_DONE Fix console double buffering
 	SetConsoleActiveScreenBuffer(bufferHandle);
 
 }

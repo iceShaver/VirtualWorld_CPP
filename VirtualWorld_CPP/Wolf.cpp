@@ -3,7 +3,8 @@
 #include "World.h"
 
 Wolf::Wolf(World* world, OrganismPositon organismPositon)
-	:Animal(world, cfg::WOLF_STRENGTH, cfg::WOLF_INITIATIVE, organismPositon, cfg::WOLF_SYMBOL, "Wilk")
+	:Animal(world, cfg::WOLF_STRENGTH, cfg::WOLF_INITIATIVE,
+		organismPositon, cfg::WOLF_SYMBOL, "Wilk")
 {
 }
 

@@ -7,7 +7,6 @@ public:
 	Fox(World* world, OrganismPositon organismPositon);
 	~Fox();
 	void act()override;
-
 	void spawn(const OrganismPositon& organismPosition) override;
 };
 

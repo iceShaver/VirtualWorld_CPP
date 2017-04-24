@@ -24,9 +24,7 @@ World::World(string name, uint8_t x, uint8_t y, WindowPosition areaPos, WindowPo
 	width(x), height(y), overallTime(0), currentSessionTime(0), totalFields(x*y), newIterator(priorityQueue.end()),
 	roundCounter(0)
 {
-	//organismsArea = new Organism*[totalFields];
-	//for (int i = 0; i < totalFields; ++i)
-	//	organismsArea[i] = nullptr;
+
 	organismsArea = new vector<vector<Organism*>>(x + 10, vector<Organism*>(y + 10));
 	for (int i = 0; i < x; ++i)
 	{
@@ -126,27 +124,10 @@ void World::playRound()
 		else ++it;
 
 	}
-	//deleteOrganisms();
-
-	//for (int i = 0; i < totalFields; ++i)
-	//{
-	//	if (organismsArea[i]) {
-	//		organismsArea[i]->increaseAge();
-	//		organismsArea[i]->act();
-	//	}
-	//}
 }
 
 void World::drawArea()
 {
-	//version for list
-	/*for (auto organism : organisms)
-	{
-		Console::setCursorPos(organism->getOrganismXPos()+areaPos.x, organism->getOrganismYPos()+areaPos.y);
-		cout << *organism;
-	}*/
-
-	//version for array
 	for (int i = 0; i < width; ++i)
 	{
 		for (int j = 0; j < height; ++j)
@@ -160,28 +141,20 @@ void World::drawArea()
 
 	}
 	if (cfg::DEBUG) {
-		//Console::setCursorPos(Console::getWidth()-10, 4);
 		int x = Console::getWidth() - 10;
-		/*for (int i = 0; i < totalFields; ++i)
-		{
-			if (organismsArea[i]) {
-				cout << *organismsArea[i];
-				Console::nextLine(x);
-			}
 
-		}
-		x += 5;*/
 		Console::setCursorPos(x, 3);
 		for (auto organism : priorityQueue)
 		{
-			cout << *organism << " " << organism->getInitiative() << " " << organism->getAge();
+			cout << *organism << " " << organism->getInitiative() 
+			<< " " << organism->getAge();
 			Console::nextLine(x);
 		}
 	}
 }
 
 
-void World::drawReporter()
+void World::drawReporter() const
 {
 	reporter->printMessages();
 }
@@ -197,7 +170,7 @@ Organism* World::pullOrganism(OrganismPositon organismPositon)
 	size_t index = organismPositon.y*width + organismPositon.x;
 	Organism*organism = (*organismsArea)[organismPositon.x][organismPositon.y];
 	(*organismsArea)[organismPositon.x][organismPositon.y] = nullptr;
-	std::multiset<Organism*, Organism::Comparator>::iterator delElem = priorityQueue.find(organism);
+	multiset<Organism*, Organism::Comparator>::iterator delElem = priorityQueue.find(organism);
 	priorityQueue.erase(delElem);
 	return organism;
 }
@@ -229,12 +202,11 @@ bool World::checkIfPlaceIsValid(short x, short y) const
 	return true;
 }
 
-void World::handleRoundInput()
+void World::handleRoundInput() const
 {
 	bool flag = true;
 	while (flag)
 	{
-		//if (Keyboard::getKey() == KEY_ENTER) break;
 		if (human)
 			switch (Keyboard::getKey())
 			{
@@ -250,6 +222,7 @@ void World::handleRoundInput()
 			case KEY_PG_DOWN: human->setMovementDirection(Human::downRight); break;
 			case KEY_DELETE: human->setMovementDirection(Human::undefined); break;
 			case KEY_SPACE: human->activateAlzursShield(); break;
+			case KEY_CTRL_S: Program::saveGame(); break;
 			case KEY_ESC: Program::close();	break;
 			default:;
 			}
@@ -257,18 +230,18 @@ void World::handleRoundInput()
 			switch (Keyboard::getKey())
 			{
 			case KEY_ENTER: flag = false; break;
+			case KEY_CTRL_S: Program::saveGame(); break;
 			case KEY_ESC: Program::close();	break;
 			default:;
 			}
 		Program::drawGameInterface();
 	}
-	//while (Keyboard::getKey() != KEY_ENTER);
 
 }
 
 
 
-Human::MovementDirection World::getHumanMoveDirection()
+Human::MovementDirection World::getHumanMoveDirection() const
 {
 	if (human)
 		return human->getMovementDirection();
@@ -278,11 +251,9 @@ Human::MovementDirection World::getHumanMoveDirection()
 
 void World::deleteOrganism(OrganismPositon organismPositon)
 {
-	//int index = organismPositon.y*width + organismPositon.x;
 	if ((*organismsArea)[organismPositon.x][organismPositon.y]) {
 		std::multiset<Organism*, Organism::Comparator>::iterator delElem = std::find(priorityQueue.begin(), priorityQueue.end(), peekOrganism(organismPositon));
 		newIterator = priorityQueue.erase(delElem);
-		//organismsToRemoveFromMultiset.push_back(organismsArea[index]);
 		delete (*organismsArea)[organismPositon.x][organismPositon.y];
 		(*organismsArea)[organismPositon.x][organismPositon.y] = nullptr;
 	}
@@ -293,18 +264,16 @@ void World::deleteOrganism(Organism*organism)
 {
 	short x = organism->getOrganismXPos();
 	short y = organism->getOrganismYPos();
-	//std::multiset<Organism*, Organism::Comparator>::iterator delElem = priorityQueue.find(organism);
-	std::multiset<Organism*, Organism::Comparator>::iterator delElem = std::find(priorityQueue.begin(), priorityQueue.end(), organism);
+	std::multiset<Organism*, Organism::Comparator>::iterator delElem =
+		std::find(priorityQueue.begin(), priorityQueue.end(), organism);
+
 	if (delElem == priorityQueue.end()) return;
-	//size_t index = organism->getOrganismYPos()*width-1 + organism->getOrganismXPos();
 	newIterator = next(delElem);
 	priorityQueue.erase(delElem);
-	//organismsToRemoveFromMultiset.push_back(organism);
 	delete organism;
 	if ((*organismsArea)[x][y])
-	{
 		(*organismsArea)[x][y] = nullptr;
-	}
+	
 }
 
 
@@ -333,25 +302,16 @@ OrganismPositon World::getRandomEmptyOrganismPosition() const
 }
 
 
-uint8_t World::getWidth()
+uint8_t World::getWidth() const
 {
 	return width;
 }
 
-uint8_t World::getHeight()
+uint8_t World::getHeight() const
 {
 	return height;
 }
 
-void World::deleteOrganisms()
-{
-	for (Organism* organism : organismsToRemoveFromMultiset)
-	{
-		std::multiset<Organism*, Organism::Comparator>::iterator delElem = priorityQueue.find(organism);
-		delete organism;
-		priorityQueue.erase(delElem);
-	}
-}
 
 uint32_t World::getRoundNumber() const
 {

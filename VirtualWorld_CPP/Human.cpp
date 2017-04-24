@@ -3,7 +3,8 @@
 #include "World.h"
 
 Human::Human(World* world, OrganismPositon organismPositon)
-	:Animal(world, cfg::HUMAN_STRENGTH, cfg::HUMAN_INITIATIVE, organismPositon, cfg::HUMAN_SYMBOL, "Czlowiek"),
+	:Animal(world, cfg::HUMAN_STRENGTH, cfg::HUMAN_INITIATIVE, 
+		organismPositon, cfg::HUMAN_SYMBOL, "Czlowiek"),
 	movementDirection(undefined), alzursShieldActivated(false)
 {
 }
@@ -18,7 +19,6 @@ Human::~Human()
 void Human::act()
 {
 	handleAlzursShield();
-	//world->newMessage("Ruch czlowieka")
 	OrganismPositon newOrganismPositon = position;
 	switch (movementDirection)
 	{

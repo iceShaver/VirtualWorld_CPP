@@ -66,7 +66,7 @@ namespace cfg
 	const uint8_t TURTLE_INITIATIVE = 1;
 	const uint8_t WOLF_INITIATIVE = 5;
 
-
+	//Other configs
 	const double ORGANISM_FULFILLMENT_RATIO = 0.1;
 	const size_t INITIATIVES_NUMBER = 8;
 	const short TURTLE_RESIST_MAX_STRENGTH = 5;

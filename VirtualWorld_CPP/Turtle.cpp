@@ -4,7 +4,8 @@
 
 
 Turtle::Turtle(World* world, OrganismPositon organismPositon)
-	:Animal(world, cfg::TURTLE_STRENGTH, cfg::TURTLE_INITIATIVE, organismPositon, cfg::TURTLE_SYMBOL, "Zolw")
+	:Animal(world, cfg::TURTLE_STRENGTH, cfg::TURTLE_INITIATIVE,
+		organismPositon, cfg::TURTLE_SYMBOL, "Zolw")
 {
 }
 
@@ -29,7 +30,8 @@ void Turtle::act()
 
 Organism::ResistType Turtle::resistsAttack(const Organism* otherOrganism)
 {
-	if (otherOrganism->getStrength() < cfg::TURTLE_RESIST_MAX_STRENGTH) return moveToPreviousPlace;
+	if (otherOrganism->getStrength() < cfg::TURTLE_RESIST_MAX_STRENGTH)
+		return moveToPreviousPlace;
 	return surrender;
 }
 
